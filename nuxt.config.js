@@ -58,6 +58,7 @@ module.exports = {
     // { src: "plugins/vue-typer", ssr: false },
     // "~plugins/vform",
     { src: "~plugins/axios", ssr: true },
+    { src: "~plugins/persistedstate.js", ssr: false },
     // "~plugins/fontawesome",
     "~plugins/base",
     "~/plugins/notifications.js",

@@ -41,6 +41,11 @@ export const mutations = {
 
 // actions
 export const actions = {
+  async nuxtServerInit({ commit }, { req }) {
+    const { data } = await this.$axios.get("/profile/user/orders");
+    console.log("suka");
+    commit("SET_ORDERS", data);
+  },
   setDubleTable({ commit }, IsTrueOrFalse) {
     commit("SET_DUBLE_TABLE", IsTrueOrFalse);
   },
@@ -50,11 +55,12 @@ export const actions = {
 
       commit("SET_LOADING", true);
       const { data } = await this.$axios.get("/profile/user/orders");
-      console.log(data);
       if (!data) {
         return alert("err loading orders");
       }
+
       commit("SET_ORDERS", data);
+
       commit("SET_LOADING", false);
     } catch (e) {
       alert("Error Loading Orders:Server Error");

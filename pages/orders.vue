@@ -291,8 +291,10 @@ export default {
     },
   },
   async created() {
-    if (process.server) await this.featchOrders();
-    if (process.server) console.log(this.orders);
+    if (process.client) await this.featchOrders();
+    // await this.featchOrders();
+    // console.log(this.orders);
+    // await this.featchOrders();
   },
 };
 </script>
