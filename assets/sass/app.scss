@@ -1,0 +1,177 @@
+// @import 'variables';
+// @import '~bootstrap/scss/bootstrap';
+// @import '~sweetalert2/src/sweetalert2';
+// @import '@fortawesome/fontawesome-svg-core/styles.css';
+
+// @import 'elements/card';
+// @import 'elements/navbar';
+// @import 'elements/buttons';
+// @import 'elements/transitions';
+* {
+  font-family: "Montserrat", sans-serif;
+}
+.w100 {
+  font-weight: 100;
+}
+.w200 {
+  font-weight: 200;
+}
+.w300 {
+  font-weight: 300;
+}
+.w400 {
+  font-weight: 400;
+}
+.v-btn {
+  text-transform: none !important;
+  letter-spacing: normal !important;
+}
+@import "elements/notofication";
+// @import '~/node_modules/vue-on-toast/dist/vue-on-toast.css' ;
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  flex: 1 1 auto;
+  margin: 0 !important;
+}
+.helper-text {
+  color: red;
+}
+.gray-text {
+  color: #7f7f7f !important;
+}
+.glassmorphism {
+  background: linear-gradient(
+    0deg,
+    rgba(7, 13, 20, 0.35),
+    rgba(7, 13, 20, 0.35)
+  );
+  backdrop-filter: blur(50px);
+  -webkit-backdrop-filter: blur(50px);
+  border: 1px solid rgba(255, 255, 255, 0.01);
+  border: linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.03),
+    rgba(255, 255, 255, 0)
+  );
+}
+
+//   .card_vacancy{
+//   display: grid;
+//   max-width: 1600px;
+//   margin: 0 auto;
+//   grid-gap: 0.5rem;
+//   grid-template-columns: repeat(auto-fit, minmax(410px, 0.5fr));
+//   @media (max-width:876px) {
+//     grid-template-columns: repeat(auto-fit, minmax(100%, 0.5fr));
+//     grid-gap: 0.7rem;
+//   }
+//   &__item{
+//         text-decoration: none;
+//     color: black;
+//     display: flex;
+//     border-radius: 10px;
+//     width: 100%;
+//     // width: 318px;
+//     // height: 173px;
+//     background: #FAFAFA;
+//     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+//     border-radius: 10px;
+//     @media (max-width:876px) {
+//       width: 100%;
+//       // height: 200px;
+//     }
+//   }
+//   &__image{
+//     width: 32%;
+//     height: 100%;
+//     border-radius: 39px;
+//   }
+// }
+// .item_card{
+//   padding: 11px 15px 11px 19px;
+//   display: flex;
+//   flex-direction: column;
+//   &:hover{
+//     cursor: pointer;
+//     transition: ease-in-out 0.2s;
+//     background: #ced3d8;
+//   }
+// }
+// .card_bottom{
+//       // background: blueviolet;
+//       display: grid;
+//       grid-template-columns: repeat(3, 1fr);
+//       grid-template-rows: repeat(2, 1fr);
+//       grid-column-gap: 7px;
+//       grid-row-gap: 10px;
+//       margin-top: 11px;
+// }
+// .item__data{
+//   display: flex;
+//   align-items: center;
+//   &__icon{
+//     width: 20px;
+//     height: 20px;
+//     margin-right: 5px;
+//   }
+//   &__text{
+//     font-size: 13px;
+//     line-height: normal;
+//     letter-spacing: normal;
+//   }
+// }
+// .top{
+//     display: flex;
+//     &__image{
+//       width: 95px;
+//       height: 95px;
+//       border-radius: 50%;
+//       box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.25);
+
+//     }
+//     &__text{
+//       margin-left: 8px;
+//       display: flex;
+//       flex-direction: column;
+//       p{
+//         padding: 0;
+//         margin: 0;
+//         font-size: 13px;
+//         align-items: center;
+//         line-height: normal;
+//         letter-spacing: normal;
+//         color: rgba(0, 0, 0, 0.5);
+//       }
+//       span{
+//         font-size: 12px;
+//         letter-spacing: normal;
+//         display: -webkit-box;
+//         -webkit-line-clamp: 3;
+//         -webkit-box-orient: vertical;
+//         overflow: hidden;
+//       }
+//     }
+// }
+// .container {
+// 	background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+// 	background-size: 400% 400%;
+// 	animation: gradient 25s ease infinite;
+// }
+// .text-container {
+//   width: 100%;
+//   color: black;
+//   display: flex;
+//   flex-direction: column;
+//   &__header {
+//     display: flex;
+//     align-content: center;
+//     justify-content: center;
+//   }
+//   &__content {
+//     padding: 10px;
+//   }
+// }
+.underline-btn {
+  border-bottom: 1px solid !important;
+}
