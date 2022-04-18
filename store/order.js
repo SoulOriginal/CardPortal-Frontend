@@ -3,10 +3,6 @@ import Cookies from "js-cookie";
 // state
 export const state = () => ({
   locale: "ru",
-  locales: {
-    en: "EN",
-    ru: "RU",
-  },
 });
 
 // getters
