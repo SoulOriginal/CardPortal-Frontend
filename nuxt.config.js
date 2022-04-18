@@ -57,7 +57,7 @@ module.exports = {
     { src: "~plugins/gsap", mode: "client", ssr: false },
     // { src: "plugins/vue-typer", ssr: false },
     // "~plugins/vform",
-    { src: "~plugins/axios", mode: "client", ssr: false },
+    { src: "~plugins/axios", ssr: true },
     // "~plugins/fontawesome",
     "~plugins/base",
     "~/plugins/notifications.js",

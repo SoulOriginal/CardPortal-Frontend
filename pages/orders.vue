@@ -56,12 +56,12 @@
           <span>Комментарий :{{ orders[dataModalInfoDataIndex].comment }}</span>
         </v-card>
       </v-dialog>
-      <v-btn fab class="mb-3" @click="duble_table = !duble_table"
+      <v-btn fab class="mb-3" @click="setDubleTable(!duble_table)"
         ><v-icon
           >mdi-{{ duble_table ? "table" : "table-multiple" }}</v-icon
         ></v-btn
       >
-      <v-card class="pa-2">
+      <v-card class="pa-2" v-if="sortedDataByDubleTable(true).length > 0">
         <v-card-title>
           <v-text-field
             v-model="search_active"
@@ -71,10 +71,9 @@
             hide-details
           ></v-text-field>
         </v-card-title>
-
         <v-data-table
           :headers="headers"
-          :items="orders"
+          :items="sortedDataByDubleTable(true)"
           :search="search_active"
           multi-sort
           :sort-desc="[false, true]"
@@ -130,7 +129,10 @@
           </template>
         </v-data-table>
       </v-card>
-      <v-card class="pa-2 mt-7">
+      <v-card
+        class="pa-2 mt-7"
+        v-if="duble_table && sortedDataByDubleTable(false).length > 0"
+      >
         <v-card-title>
           <v-text-field
             v-model="search_active"
@@ -143,7 +145,7 @@
 
         <v-data-table
           :headers="headers"
-          :items="filterOnStatus"
+          :items="sortedDataByDubleTable(false)"
           :search="search_active"
           multi-sort
           :sort-desc="[false, true]"
@@ -204,12 +206,12 @@
 </template>
 
 <script>
+import { mapGetters, mapActions, mapState } from "vuex";
+
 export default {
   layout: "profile",
   data() {
     return {
-      orders: [],
-      duble_table: false,
       dataModalEdit: {},
       dataModalInfo: false,
       dataModalInfoDataIndex: null,
@@ -242,15 +244,28 @@ export default {
       if (!this.duble_table) return this.orders;
       return this.orders.filter((value) => value.status === status_prop);
     },
+    ...mapState("order", {
+      loading: (state) => state.loading,
+      orders: (state) => state.orders,
+      duble_table: (state) => state.duble_table,
+    }),
+    ...mapGetters({
+      sortedDataByDubleTable: "order/sortedDataByDubleTable",
+    }),
   },
   methods: {
+    ...mapActions({
+      featchOrders: "order/featchOrders",
+      updateOrder: "order/updateOrder",
+      updateOrderStatus: "order/updateOrderStatus",
+      setDubleTable: "order/setDubleTable",
+    }),
+
     async handleUpdateCurd() {
-      await this.$axios.put("/profile/user/orders/edit", {
-        ...this.dataModalEdit,
-      });
+      await this.updateOrder(this.dataModalEdit);
     },
     async handleActivateCurd(id, active) {
-      await this.$axios.put("/profile/user/orders/active", {
+      await this.updateOrderStatus({
         gds_id: id,
         active: !active,
       });
@@ -275,9 +290,9 @@ export default {
         })[0];
     },
   },
-  async mounted() {
-    const { data } = await this.$axios.get("/profile/user/orders");
-    this.orders = data;
+  async created() {
+    if (process.server) await this.featchOrders();
+    if (process.server) console.log(this.orders);
   },
 };
 </script>
