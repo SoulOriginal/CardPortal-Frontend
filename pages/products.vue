@@ -198,9 +198,12 @@ export default {
           "На вашем балансе не хватает средств, пополните баланс"
         );
       }
+      console.log(this.selectedItem);
       const { data } = await this.$axios.post("/profile/user/buy", {
         buy_price: this.calculatedPrice,
         buy_сurrency: this.selectedItem.сurrency_sale,
+        // card_balance: this.selectedItem.balance,
+        currency_card: this.selectedItem.сurrency_sale,
         item_id: this.selectedItem._id,
         amount: this.cardsLengt,
       });

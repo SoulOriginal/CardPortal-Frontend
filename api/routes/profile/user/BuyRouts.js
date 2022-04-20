@@ -7,6 +7,7 @@ import { validateRequest } from "../../../common/middlewares/validate-request";
 
 const GdsSchema = require("../../../../models/gdsSchema");
 const configSchema = require("../../../../models/configSchema");
+const OrdersHistorySchema = require("../../../../models/OrdersHistorySchema");
 const User = require("../../../../models/userSchema");
 const router = express.Router();
 router.post(
@@ -16,7 +17,7 @@ router.post(
   requireAuth,
   async (req, res) => {
     const { email } = req.currentUser;
-    var { buy_price, buy_сurrency, item_id, amount } = req.body;
+    var { buy_price, buy_сurrency, currency_card, item_id, amount } = req.body;
     // const ids = new ObjectId(id);
     const existingUser = await User.findOne({ email });
     if (!existingUser) {
@@ -58,11 +59,27 @@ router.post(
     for (const gdsIdsItem of GdsFind) {
       ObjectIds.push(new ObjectId(gdsIdsItem.ids));
     }
+    const NewDateNow = Date.now();
     const SetCardsByUserId = await GdsSchema.updateMany(
       { _id: { $in: ObjectIds } },
-      { $set: { user_id: existingUser._id, opened_date: Date.now } },
+      { $set: { user_id: existingUser._id, opened_date: NewDateNow } },
       { multi: true }
     );
+    console.log(ConfigFind);
+    const OrdersHistoryCreate = await new OrdersHistorySchema({
+      user_id: existingUser._id,
+      buy_price,
+      amount,
+      сurrency_buy: buy_сurrency,
+      card_balance: ConfigFind[0].balance,
+      currency_card,
+    });
+    console.log(OrdersHistoryCreate);
+    await OrdersHistoryCreate.save();
+    if (!OrdersHistoryCreate) {
+      res.json({ payload: "Error save User" });
+      return;
+    }
     res.json({ payload: "ok", status: 200 });
   }
 );
