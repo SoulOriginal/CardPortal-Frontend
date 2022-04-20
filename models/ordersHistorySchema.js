@@ -1,24 +1,17 @@
 const mongoose = require("mongoose");
 
-const gdsSchema = new mongoose.Schema(
+const OrdersHistorySchema = new mongoose.Schema(
   {
-    card_number: { type: Number, required: true },
-    card_month: { type: String, required: true },
-    card_year: { type: String, required: true },
-    card_cvv: { type: Number, required: true },
-    type: { type: String, required: true },
-    balance: { type: Number },
-    cnf_id: { type: String, required: true },
-    user_id: { type: String },
-    custom_name: { type: String },
-    comment: { type: String },
-    status: { type: Boolean, default: true },
-    opened_date: { type: Date },
+    availability: { type: Number, required: true },
+    сurrency_buy: { type: String, required: true },
+    currency_card: { type: String, required: true },
+    card_balance: { type: Number, required: true },
+    user_id: { type: String, required: true },
     create_date: { type: Date, default: Date.now },
   },
   {
     versionKey: false,
   }
 );
-const userEntity = mongoose.model("Gds", gdsSchema);
+const userEntity = mongoose.model("OrdersHistory", OrdersHistorySchema);
 module.exports = userEntity;
