@@ -35,10 +35,6 @@ router.post(
       return res.json({ payload: "Ошибка Количества", status: "992" });
     }
     amount = parseInt(amount);
-    // const GdsFind = await GdsSchema.find({ cnf_id: item_id })
-    //   .limit(amount)
-    //   .select("_id");
-
     const GdsFind = await GdsSchema.aggregate([
       {
         $match: {
@@ -64,7 +60,7 @@ router.post(
     }
     const SetCardsByUserId = await GdsSchema.updateMany(
       { _id: { $in: ObjectIds } },
-      { $set: { user_id: existingUser._id } },
+      { $set: { user_id: existingUser._id, opened_date: Date.now } },
       { multi: true }
     );
     res.json({ payload: "ok", status: 200 });

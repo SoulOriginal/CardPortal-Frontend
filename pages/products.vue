@@ -1,9 +1,9 @@
 <template>
   <div>
     <h1>Наши продукты</h1>
-    <v-btn fab small @click="view_categories = !view_categories" class="ma-3"
+    <v-btn fab small @click="setDubleTable(!duble_table)" class="ma-3"
       ><v-icon>{{
-        view_categories ? `mdi-format-list-bulleted-type` : `mdi-table-large`
+        duble_table ? `mdi-format-list-bulleted-type` : `mdi-table-large`
       }}</v-icon></v-btn
     >
     <v-dialog width="600" v-model="ModalBuyIsOpen">
@@ -45,7 +45,7 @@
         <v-btn block class="mt-3" @click="hendlerBuy"> Оплатить</v-btn>
       </v-card>
     </v-dialog>
-    <v-card class="pa-2" v-if="view_categories">
+    <v-card class="pa-2" v-if="duble_table">
       <v-card-title>
         <v-text-field
           v-model="search"
@@ -55,10 +55,9 @@
           hide-details
         ></v-text-field>
       </v-card-title>
-
       <v-data-table
         :headers="headers"
-        :items="products"
+        :items="categories"
         :search="search"
         multi-sort
         :sort-desc="[false, true]"
@@ -79,7 +78,7 @@
     </v-card>
     <div v-else>
       <v-card
-        v-for="(product, index) in products"
+        v-for="(product, index) in categories"
         :key="index"
         class="pa-4 mt-3 product rounded-lg"
         elevation="2"
@@ -130,13 +129,11 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions, mapState } from "vuex";
 export default {
   layout: "profile",
   data() {
     return {
-      view_categories: true,
-      products: [],
       search: null,
       cardsLengt: 0,
       ModalBuyIsOpen: false,
@@ -166,28 +163,34 @@ export default {
       this.closeDialog();
     }
   },
-  async fetch() {
-    const { data } = await this.$axios.get("/profile/admin/conf");
+  // async fetch() {
+  //   const { data } = await this.$axios.get("/profile/admin/conf");
 
-    // this.products.push(data);
-    this.products = data;
+  //   // this.categories.push(data);
+  //   this.categories = data;
+  // },
+  created() {
+    this.featchCategories();
   },
   computed: {
+    ...mapState("categories", {
+      categories: (state) => state.categories,
+      duble_table: (state) => state.duble_table,
+    }),
     ...mapGetters({
       balance: "auth/balance",
       balance_сurrency: "auth/balance_сurrency",
     }),
-    closeDialog() {
-      this.ModalBuyIsOpen = false;
-      this.selectedItem = {};
-      this.cardsLengt = 0;
-    },
     calculatedPrice() {
       if (!parseInt(this.cardsLengt)) return 0;
       return parseInt(this.cardsLengt) * parseInt(this.selectedItem.price);
     },
   },
   methods: {
+    ...mapActions({
+      featchCategories: "categories/featchCategories",
+      setDubleTable: "categories/setDubleTable",
+    }),
     async hendlerBuy() {
       if (this.calculatedPrice > this.balance) {
         return this.$vueOnToast.pop(
@@ -202,9 +205,13 @@ export default {
         amount: this.cardsLengt,
       });
       const { status } = data;
-      console.log(status);
       if (status == 200) {
-        return this.$vueOnToast.pop("done", "Оплата успешно прошла");
+        await this.$vueOnToast.pop("done", "Оплата успешно прошла");
+        await this.$store.dispatch("auth/fetchUser");
+        await this.featchCategories();
+        this.closeDialog();
+        this.$router.push({ name: "orders" });
+        return;
       }
       if (status == 99) {
         return this.$vueOnToast.pop(
@@ -229,8 +236,13 @@ export default {
       }
     },
     openModalBuy(id) {
-      this.selectedItem = this.products.filter((val) => val._id === id)[0];
+      this.selectedItem = this.categories.filter((val) => val._id === id)[0];
       this.ModalBuyIsOpen = true;
+    },
+    closeDialog() {
+      this.ModalBuyIsOpen = false;
+      this.selectedItem = {};
+      this.cardsLengt = 0;
     },
   },
 };

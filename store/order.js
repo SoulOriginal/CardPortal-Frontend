@@ -7,8 +7,6 @@ export const state = () => ({
 
 // getters
 export const getters = {
-  locale: (state) => state.locale,
-  locales: (state) => state.locales,
   sortedDataByDubleTable: (state) => (prop_status_table) => {
     if (!state.duble_table) return state.orders;
     return state.orders.filter((order) => order.status === prop_status_table);
@@ -41,14 +39,10 @@ export const mutations = {
 
 // actions
 export const actions = {
-  async nuxtServerInit({ commit }, { req }) {
-    const { data } = await this.$axios.get("/profile/user/orders");
-    console.log("suka");
-    commit("SET_ORDERS", data);
-  },
   setDubleTable({ commit }, IsTrueOrFalse) {
     commit("SET_DUBLE_TABLE", IsTrueOrFalse);
   },
+
   async featchOrders({ commit }) {
     try {
       console.log(1234);
@@ -60,7 +54,6 @@ export const actions = {
       }
 
       commit("SET_ORDERS", data);
-
       commit("SET_LOADING", false);
     } catch (e) {
       alert("Error Loading Orders:Server Error");

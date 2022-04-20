@@ -1,5 +1,5 @@
 <template>
-  <client-only>
+  <client-only1>
     <div>
       <v-dialog width="600" v-model="ModalEditIsOpen">
         <v-card class="pa-3">
@@ -40,6 +40,19 @@
       </v-dialog>
       <v-dialog width="600" v-model="dataModalInfo">
         <v-card class="pa-3" v-if="dataModalInfoDataIndex !== null">
+          <v-row no-gutters>
+            <v-col cols="12" align="center" justify="center">
+              <v-img
+                class="product--img"
+                max-height="170"
+                max-width="190"
+                contain
+                src="https://static.qiwi.com/img/qiwi_com/cards/virtual/list.png"
+                lazy-src="https://static.qiwi.com/img/qiwi_com/cards/virtual/list.png"
+              ></v-img>
+            </v-col>
+          </v-row>
+
           <span
             >Начальный баланс:{{
               orders[dataModalInfoDataIndex].info_card.balance
@@ -202,11 +215,13 @@
         </v-data-table>
       </v-card>
     </div>
-  </client-only>
+    <div ref="cursorl" class="cursor cursor--large"></div>
+    <div class="cursor cursor--small"></div>
+  </client-only1>
 </template>
 
 <script>
-import { mapGetters, mapActions, mapState } from "vuex";
+import { mapGetters, mapActions, mapState, mapMutations } from "vuex";
 
 export default {
   layout: "profile",
@@ -240,6 +255,10 @@ export default {
     };
   },
   computed: {
+    getTablelang() {
+      const langStr = this.locale;
+      return `${this.locale}-${langStr.toUpperCase()}`;
+    },
     filterOnStatus(status_prop) {
       if (!this.duble_table) return this.orders;
       return this.orders.filter((value) => value.status === status_prop);
@@ -248,6 +267,9 @@ export default {
       loading: (state) => state.loading,
       orders: (state) => state.orders,
       duble_table: (state) => state.duble_table,
+    }),
+    ...mapState("lang", {
+      locale: (state) => state.locale,
     }),
     ...mapGetters({
       sortedDataByDubleTable: "order/sortedDataByDubleTable",
@@ -260,7 +282,9 @@ export default {
       updateOrderStatus: "order/updateOrderStatus",
       setDubleTable: "order/setDubleTable",
     }),
-
+    ...mapMutations({
+      SET_ORDERS: "order/SET_ORDERS",
+    }),
     async handleUpdateCurd() {
       await this.updateOrder(this.dataModalEdit);
     },
@@ -290,13 +314,8 @@ export default {
         })[0];
     },
   },
-  async created() {
-    if (process.client) await this.featchOrders();
-    // await this.featchOrders();
-    // console.log(this.orders);
-    // await this.featchOrders();
+  async mounted() {
+    await this.featchOrders();
   },
 };
 </script>
-
-<style></style>

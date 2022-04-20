@@ -1,9 +1,17 @@
 import Cookies from "js-cookie";
 import { cookieFromRequest } from "~/utils";
-import { state } from "./auth";
-
+// import { state } from "./auth";
+// import { actions as OrderActions } from "./order";
 export const actions = {
-  nuxtServerInit({ commit }, { req }) {
+  async nuxtServerInit({ commit }, { req }) {
+    // await OrderActions.featchOrders();
+    // console.log(
+    //   "🚀 ~ file: index.js ~ line 22 ~ nuxtClientInit ~ await OrderActions.featchOrders()",
+    //   await OrderActions.featchOrders()
+    // );
+    // const { data } = await this.$axios.get("/profile/user/orders");
+    // console.log(data);
+    // commit("order/SET_ORDERS", data);
     const token = cookieFromRequest(req, "token");
     if (token) {
       commit("auth/SET_TOKEN", token);
@@ -13,9 +21,10 @@ export const actions = {
     if (locale) {
       commit("lang/SET_LOCALE", { locale });
     }
+    // await OrderActions.featchOrders();
   },
 
-  nuxtClientInit({ commit }) {
+  async nuxtClientInit({ commit }) {
     const token = Cookies.get("token");
     if (token) {
       commit("auth/SET_TOKEN", token);
