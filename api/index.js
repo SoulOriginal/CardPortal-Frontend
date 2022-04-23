@@ -18,6 +18,7 @@ import { chekCodeEmail } from "./routes/restoreAccess/chekCodeEmail";
 import { EmailShareInt } from "./routes/restoreAccess/EmailShareInt";
 
 import { aboutMeRouter } from "./routes/personal/aboutMe";
+import { updateMePassword } from "./routes/personal/updateMePassword";
 
 import { BuyRouts } from "./routes/profile/user/BuyRouts";
 import { ordersRouts } from "./routes/profile/user/ordersRouts";
@@ -249,6 +250,7 @@ app.use(chekCodeEmail);
 app.use(EmailShareInt);
 
 app.use(aboutMeRouter);
+app.use(updateMePassword);
 
 app.use(GdsRouts);
 

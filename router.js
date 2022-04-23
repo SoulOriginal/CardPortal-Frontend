@@ -29,6 +29,11 @@ const routes = [
   { path: "/user/products", name: "products", component: page("products.vue") },
   { path: "/user/orders", name: "orders", component: page("orders.vue") },
   {
+    path: "/user/settings/password",
+    name: "settings.password",
+    component: page("settings/password.vue"),
+  },
+  {
     path: "/user/orders/history",
     name: "orders.history",
     component: page("ordersHistory.vue"),
