@@ -70,9 +70,11 @@ router.post(
       user_id: existingUser._id,
       buy_price,
       amount,
+      cnf_id: item_id,
       сurrency_buy: buy_сurrency,
       card_balance: ConfigFind[0].balance,
       currency_card,
+      cards_buy_ids: ObjectIds,
     });
     console.log(OrdersHistoryCreate);
     await OrdersHistoryCreate.save();

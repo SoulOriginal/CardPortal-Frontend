@@ -155,6 +155,11 @@ export default {
         icon: "mdi-account",
         to: "orders",
       },
+      {
+        title: "История",
+        icon: "mdi-account",
+        to: "orders.history",
+      },
     ],
   }),
 

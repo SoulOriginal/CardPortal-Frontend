@@ -1,6 +1,7 @@
 // state
 export const state = () => ({
   orders: [],
+  history: [],
   duble_table: false,
   loading: true,
 });
@@ -17,6 +18,9 @@ export const getters = {
 export const mutations = {
   SET_ORDERS(state, orders) {
     state.orders = orders;
+  },
+  SET_HISTORY(state, history) {
+    state.history = history;
   },
   UPDATE_BY_ID(state, { _id, data }) {
     const index = state.orders.findIndex((item) => item._id === _id);
@@ -58,6 +62,20 @@ export const actions = {
     } catch (e) {
       alert("Error Loading Orders:Server Error");
       commit("SET_ORDERS", []);
+    }
+  },
+  async featchOrdersHistory({ commit }) {
+    try {
+      commit("SET_LOADING", true);
+      const { data } = await this.$axios.get("/profile/user/orders/history");
+      if (!data) {
+        return alert("err loading orders history");
+      }
+      commit("SET_HISTORY", data);
+      commit("SET_LOADING", false);
+    } catch (e) {
+      alert("Error Loading Orders History:Server Error");
+      commit("SET_HISTORY", []);
     }
   },
   async updateOrder({ commit }, data) {

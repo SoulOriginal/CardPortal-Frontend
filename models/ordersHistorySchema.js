@@ -8,6 +8,8 @@ const OrdersHistorySchema = new mongoose.Schema(
     currency_card: { type: String, required: true }, // Валюта карты на момент покупки
     card_balance: { type: Number, required: true }, // Баланс карт покупки
     user_id: { type: String, required: true }, // Кто купил?
+    cnf_id: { type: String, required: true },
+    cards_buy_ids: { type: Array, default: [], required: true },
     create_date: { type: Date, default: Date.now },
   },
   {
