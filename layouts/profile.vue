@@ -188,7 +188,7 @@ export default {
       {
         title: "Продукты",
         icon: "mdi-view-dashboard",
-        to: "products",
+        to: "user",
       },
       {
         title: "Заказы",

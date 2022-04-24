@@ -14,7 +14,6 @@ const routes = [
   // },
   { path: "/login", name: "login", component: page("auth/login.vue") },
   { path: "/register", name: "auth.user", component: page("auth/user.vue") },
-  { path: "/user", name: "user", component: page("user.vue") },
   { path: "/admin", name: "admin", component: page("admin/index.vue") },
   {
     path: "/admin/users",
@@ -26,7 +25,7 @@ const routes = [
     name: "admin.cards",
     component: page("admin/cards.vue"),
   },
-  { path: "/user/products", name: "products", component: page("products.vue") },
+  { path: "/user", name: "user", component: page("products.vue") },
   { path: "/user/orders", name: "orders", component: page("orders.vue") },
   {
     path: "/user/settings/password",
