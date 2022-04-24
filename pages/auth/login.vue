@@ -120,7 +120,6 @@ export default {
   head() {
     return { title: this.$t("login") };
   },
-
   data() {
     return {
       login: {

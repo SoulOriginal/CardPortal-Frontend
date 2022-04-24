@@ -19,5 +19,9 @@ export default {
     HomeAppBar: () => import("~/components/AppBar"),
     HomeFooter: () => import("~/components/Footer"),
   },
+  async beforeCreate() {
+    console.log(123123);
+    await this.$store.dispatch("auth/fetchUser");
+  },
 };
 </script>

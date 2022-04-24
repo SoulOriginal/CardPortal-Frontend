@@ -59,6 +59,7 @@ module.exports = {
     // "~plugins/vform",
     { src: "~plugins/axios", ssr: true },
     { src: "~plugins/persistedstate.js", ssr: false },
+    { src: "~plugins/bottom-sheet.js", ssr: false },
     // "~plugins/fontawesome",
     "~plugins/base",
     "~/plugins/notifications.js",

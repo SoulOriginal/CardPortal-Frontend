@@ -7,7 +7,7 @@ import { validateRequest } from "../../../common/middlewares/validate-request";
 
 const GdsSchema = require("../../../../models/gdsSchema");
 const configSchema = require("../../../../models/configSchema");
-const OrdersHistorySchema = require("../../../../models/OrdersHistorySchema");
+const OrdersHistorySchema = require("../../../../models/OrdersHistorySchema.js");
 const User = require("../../../../models/userSchema");
 const router = express.Router();
 router.post(
@@ -66,7 +66,7 @@ router.post(
       { multi: true }
     );
     console.log(ConfigFind);
-    const OrdersHistoryCreate = await new OrdersHistorySchema({
+    const OrdersHistoryCreate = new OrdersHistorySchema({
       user_id: existingUser._id,
       buy_price,
       amount,

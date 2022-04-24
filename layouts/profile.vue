@@ -89,7 +89,7 @@
             elevation="1"
             fab
             small
-            @click="mini = !mini"
+            @click="handlerChangeViewUserBar()"
           >
             <v-icon>
               {{ mini ? "mdi-format-list-bulleted" : "mdi-dots-vertical" }}
@@ -122,6 +122,50 @@
         <v-divider></v-divider>
       </v-card>
     </v-dialog>
+    <vue-bottom-sheet
+      v-if="$vuetify.breakpoint.width <= 960"
+      ref="myBottomSheet"
+      :swipe-able="true"
+      :background-scrollable="false"
+      :overlay="true"
+      max-height="50%"
+    >
+      <div class="bottom-sheet__container pa-3">
+        <v-list expand nav v-bind="$attrs" v-on="$listeners">
+          <template v-for="(item, i) in items">
+            <v-list-item
+              :key="`group_two-${i}`"
+              exact-path
+              :href="item.href"
+              :rel="item.href ? 'nofollow' : undefined"
+              :target="item.href ? '_blank' : undefined"
+              :to="{ name: item.to }"
+              active-class="red white--text "
+              class="py-1 dark_my white--text"
+              link
+              v-bind="$attrs"
+              v-on="$listeners"
+            >
+              <v-list-item-icon
+                v-if="!item.icon"
+                color="white"
+                class="text-caption text-uppercase justify-center ml-1 my-2 align-self-center"
+              >
+                {{ title }}
+              </v-list-item-icon>
+
+              <v-list-item-icon v-if="item.icon" class="my-2 align-self-center">
+                <v-icon color="white" v-text="item.icon" />
+              </v-list-item-icon>
+
+              <v-list-item-content v-if="item.title">
+                <v-list-item-title v-text="item.title" />
+              </v-list-item-content>
+            </v-list-item>
+          </template>
+        </v-list>
+      </div>
+    </vue-bottom-sheet>
   </v-app>
 </template>
 
@@ -129,9 +173,10 @@
 import { mapGetters } from "vuex";
 import { loadMessages } from "~/plugins/i18n";
 export default {
-  props: {
-    source: String,
-  },
+  middleware: "go-home",
+  // components: {
+  //   VueBottomSheet,
+  // },
   data: ({ context, app }) => ({
     dialog: false,
     drawer: true,
@@ -141,23 +186,18 @@ export default {
 
     items: [
       {
-        title: "Главаная",
-        icon: "mdi-view-dashboard",
-        to: "user",
-      },
-      {
         title: "Продукты",
-        icon: "mdi-account",
+        icon: "mdi-view-dashboard",
         to: "products",
       },
       {
         title: "Заказы",
-        icon: "mdi-account",
+        icon: "mdi-cart-check",
         to: "orders",
       },
       {
         title: "История",
-        icon: "mdi-account",
+        icon: "mdi-clipboard-text-clock",
         to: "orders.history",
       },
     ],
@@ -170,10 +210,21 @@ export default {
     balance: "auth/balance",
     balance_сurrency: "auth/balance_сurrency",
   }),
-  async created() {
-    await this.$store.dispatch("auth/fetchUser");
-  },
+
   methods: {
+    open() {
+      this.$refs.myBottomSheet.open();
+    },
+    close() {
+      this.$refs.myBottomSheet.close();
+    },
+    handlerChangeViewUserBar() {
+      if (this.$vuetify.breakpoint.width <= 960) {
+        this.open();
+      } else {
+        this.mini = !this.mini;
+      }
+    },
     setLocale(locale) {
       if (this.$i18n.locale !== locale) {
         loadMessages(locale);
@@ -223,4 +274,6 @@ export default {
         width: unset
         z-index: 6
         outline: none
+.dark_my
+  background-color: #000000
 </style>

@@ -1,7 +1,7 @@
 import Cookies from "js-cookie";
 import { cookieFromRequest } from "~/utils";
 // import { state } from "./auth";
-// import { actions as OrderActions } from "./order";
+import { actions as AuthActions } from "./auth";
 export const actions = {
   async nuxtServerInit({ commit }, { req }) {
     // await OrderActions.featchOrders();
@@ -13,6 +13,7 @@ export const actions = {
     // console.log(data);
     // commit("order/SET_ORDERS", data);
     const token = cookieFromRequest(req, "token");
+    console.log(token);
     if (token) {
       commit("auth/SET_TOKEN", token);
     }
@@ -26,6 +27,7 @@ export const actions = {
 
   async nuxtClientInit({ commit }) {
     const token = Cookies.get("token");
+    console.log(token);
     if (token) {
       commit("auth/SET_TOKEN", token);
     }
