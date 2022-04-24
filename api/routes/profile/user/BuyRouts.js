@@ -7,7 +7,7 @@ import { validateRequest } from "../../../common/middlewares/validate-request";
 
 const GdsSchema = require("../../../../models/gdsSchema");
 const configSchema = require("../../../../models/configSchema");
-const OrdersHistorySchema = require("../../../../models/OrdersHistorySchema.js");
+const OrdersHistorySchema = require("../../../../models/ordersHistorySchema.js");
 const User = require("../../../../models/userSchema");
 const router = express.Router();
 router.post(
