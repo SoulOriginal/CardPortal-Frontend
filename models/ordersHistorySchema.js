@@ -16,5 +16,5 @@ const OrdersHistorySchema = new mongoose.Schema(
     versionKey: false,
   }
 );
-const userEntity = mongoose.model("OrdersHistory", OrdersHistorySchema);
+const userEntity = mongoose.model("OrdersHistorySchema", OrdersHistorySchema);
 module.exports = userEntity;

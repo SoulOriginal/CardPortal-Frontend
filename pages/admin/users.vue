@@ -1,7 +1,6 @@
 <template>
   <div>
     <v-btn @click="changeTable(`user`)" color="blue">Get users</v-btn>
-    <v-btn @click="changeTable(`partner`)" color="red">Get Partners</v-btn>
     <v-btn @click="changeTable(`admin`)" color="green">Get Admins</v-btn>
 
     <v-data-table
@@ -56,24 +55,8 @@ export default {
           value: "email",
         },
         { text: "Верефецирован", value: "verified" },
-        { text: "Стутус", value: "role" },
-      ],
-      headers_partnter: [
-        {
-          text: "Аддрес",
-          align: "start",
-          value: "address",
-        },
-        {
-          text: "Email",
-          align: "start",
-          sortable: false,
-          value: "email",
-        },
-        { text: "Название фирмы", value: "firm_name" },
-        { text: "NIP", value: "NIP" },
-        { text: "Верефецирован", value: "verified" },
-        { text: "Стутус", value: "role" },
+        { text: "Баланс", value: "balance" },
+        { text: "Дата создания", value: "create_date" },
       ],
     };
   },
@@ -94,11 +77,6 @@ export default {
       this.getUsers({ page });
     },
     changeTable(role) {
-      if (role == ("user" || "admin")) {
-        this.nowHeader = this.headers_user;
-      } else if (role == "partner") {
-        this.nowHeader = this.headers_partnter;
-      }
       this.role = role;
       this.getUsers({ role, page: 1 });
     },

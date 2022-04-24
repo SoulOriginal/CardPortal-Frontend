@@ -32,7 +32,7 @@ import { ordersRouts } from "./routes/profile/user/ordersRouts";
 
 // import { orders } from "./routes/profile/admin/orders";
 // import { setOrderStatus } from "./routes/profile/admin/setOrderStatus";
-// import { getUsersListRouter } from "./routes/profile/admin/getAllUsers";
+import { getUsersListRouter } from "./routes/profile/admin/getAllUsers";
 // import { uploadKML } from "./routes/profile/admin/uploadKML";
 // import { PointsSort } from "./routes/profile/admin/PointsSort";
 // import { uploadBrands } from "./routes/profile/admin/uploadBrands";
@@ -268,7 +268,7 @@ app.use(ordersRouts);
 
 // app.use(orders);
 // app.use(setOrderStatus);
-// app.use(getUsersListRouter);
+app.use(getUsersListRouter);
 // app.use(uploadKML);
 // app.use(PointsSort);
 // app.use(uploadBrands);
