@@ -207,28 +207,28 @@ app.all("*", function (req, res, next) {
 //     origin: "http://localhost:8081",
 //   })
 // );
-let whitelist = [
-  "http://localhost:8081",
-  "http://localhost:8080",
-  "http://localhost:4500",
-  "http://localhost:4600",
-  "https://get-man.com",
-  "https://api.get-man.com",
-];
-app.use(
-  cors({
-    credentials: true,
-    origin: function (origin, callback) {
-      // allow requests with no origin
-      if (!origin) return callback(null, true);
-      if (whitelist.indexOf(origin) === -1) {
-        var message = "Idi na xui";
-        return callback(new Error(message), false);
-      }
-      return callback(null, true);
-    },
-  })
-);
+// let whitelist = [
+//   "http://localhost:8081",
+//   "http://localhost:8080",
+//   "http://localhost:4500",
+//   "http://localhost:4600",
+//   "https://get-man.com",
+//   "https://api.get-man.com",
+// ];
+// app.use(
+//   cors({
+//     credentials: true,
+//     origin: function (origin, callback) {
+//       // allow requests with no origin
+//       if (!origin) return callback(null, true);
+//       if (whitelist.indexOf(origin) === -1) {
+//         var message = "Idi na xui";
+//         return callback(new Error(message), false);
+//       }
+//       return callback(null, true);
+//     },
+//   })
+// );
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
