@@ -8,7 +8,7 @@ import { validateRequest } from "../../../common/middlewares/validate-request";
 const GdsSchema = require("../../../../models/gdsSchema");
 const configSchema = require("../../../../models/configSchema");
 const User = require("../../../../models/userSchema");
-const OrdersHistorySchema = require("../../../../models/OrdersHistorySchema");
+const OrdersHistorySchema = require("../../../../models/ordersHistorySchema");
 
 const router = express.Router();
 
