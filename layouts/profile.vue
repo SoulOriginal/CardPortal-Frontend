@@ -210,7 +210,9 @@ export default {
     balance: "auth/balance",
     balance_сurrency: "auth/balance_сurrency",
   }),
-
+  async beforeCreate() {
+    await this.$store.dispatch("auth/fetchUser");
+  },
   methods: {
     open() {
       this.$refs.myBottomSheet.open();

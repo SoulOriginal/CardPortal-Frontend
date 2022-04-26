@@ -151,7 +151,9 @@ export default {
     locales: "lang/locales",
     user: "auth/user",
   }),
-
+  async beforeCreate() {
+    await this.$store.dispatch("auth/fetchUser");
+  },
   methods: {
     setLocale(locale) {
       if (this.$i18n.locale !== locale) {

@@ -41,6 +41,12 @@
               >{{ balance }} {{ balance_сurrency }}</v-chip
             ></v-col
           >
+          <v-col cols="12">
+            Баланс после покупки:
+            <v-chip outlined color="blue"
+              >{{ calculatedPriceAfterBuy }} {{ balance_сurrency }}</v-chip
+            ></v-col
+          >
         </v-row>
         <v-btn block class="mt-3" @click="hendlerBuy"> Оплатить</v-btn>
       </v-card>
@@ -185,6 +191,10 @@ export default {
       if (!parseInt(this.cardsLengt)) return 0;
       return parseInt(this.cardsLengt) * parseInt(this.selectedItem.price);
     },
+    calculatedPriceAfterBuy() {
+      if (!parseInt(this.balance)) return 0;
+      return parseInt(this.balance) - parseInt(this.calculatedPrice);
+    },
   },
   methods: {
     ...mapActions({
@@ -196,6 +206,12 @@ export default {
         return this.$vueOnToast.pop(
           "error",
           "На вашем балансе не хватает средств, пополните баланс"
+        );
+      }
+      if (this.cardsLengt > this.selectedItem.availability) {
+        return this.$vueOnToast.pop(
+          "error",
+          "Вы выбрали для заказа больше чем доступно"
         );
       }
       console.log(this.selectedItem);
