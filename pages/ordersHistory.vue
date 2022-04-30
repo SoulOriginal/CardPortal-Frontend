@@ -44,6 +44,12 @@
             <span>{{ $moment(item.create_date).format("L hh:mm") }} </span>
           </v-tooltip>
         </template>
+        <template v-slot:item.buy_price="{ item }">
+          {{ item.buy_price }} {{ item.сurrency_buy }}
+        </template>
+        <template v-slot:item.card_balance="{ item }">
+          {{ item.card_balance }} {{ item.currency_card }}
+        </template>
       </v-data-table>
     </v-card>
   </div>
@@ -65,8 +71,7 @@ export default {
           value: "name",
         },
         { text: "Количество", value: "amount" },
-        { text: "Номинал", value: "card_balance" },
-        { text: "Валюта карт", value: "currency_card" },
+        { text: "Баланс карт", value: "card_balance" },
         { text: "Стоимость", value: "buy_price" },
         { text: "Оплата", value: "сurrency_buy" },
         { text: "Дата", value: "create_date" },

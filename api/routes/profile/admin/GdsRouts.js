@@ -63,7 +63,33 @@ router.get(
   async (req, res) => {
     const { id } = req.currentUser;
     const ids = new ObjectId(id);
-    const data = await GdsSchema.find();
+    // const data = await GdsSchema.find();
+    const data = await GdsSchema.aggregate([
+      {
+        $set: {
+          cnf_id: {
+            $toObjectId: "$cnf_id",
+          },
+        },
+      },
+      {
+        $lookup: {
+          from: "configs",
+          localField: "cnf_id",
+          foreignField: "_id",
+          as: "info_conf",
+        },
+      },
+      {
+        $addFields: { name: "$info_conf.name" },
+      },
+      { $unwind: "$name" },
+      {
+        $addFields: { info_card: "$info_conf" },
+      },
+      { $unwind: "$info_card" },
+      { $unset: ["info_conf"] },
+    ]);
 
     if (Object.keys(data).length !== 0 || data !== (null || undefined)) {
       res.status(200).json(data);

@@ -97,13 +97,13 @@
       <v-btn
         class="text-capitalize font-weight-regular"
         v-if="user"
-        :to="'/' + user.role"
+        :to="{ name: user.role }"
       >
         {{ $t("profile") }}
       </v-btn>
       <v-btn
         text
-        to="login"
+        :to="{ name: 'login' }"
         class="black--white text-sm-body-2 text-capitalize font-weight-regular rounded-pill"
         v-if="!user"
       >
@@ -112,7 +112,7 @@
       <v-btn
         class="colored-btn text-sm-body-2 text-capitalize font-weight-regular rounded-pill white"
         v-if="!user"
-        to="register"
+        :to="{ name: 'auth.user' }"
       >
         {{ $t("register") }}
       </v-btn>
@@ -182,19 +182,11 @@ export default {
       return [
         {
           title: this.$t("pin.about_company"),
-          route: "/about",
+          route: "about",
         },
         {
           title: this.$t("pin.me_products"),
-          route: "/products",
-        },
-        {
-          title: this.$t("pin.security"),
-          route: "/security",
-        },
-        {
-          title: this.$t("pin.history_company"),
-          route: "/history",
+          route: "products",
         },
       ];
     },

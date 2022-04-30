@@ -22,6 +22,8 @@ import { updateMePassword } from "./routes/personal/updateMePassword";
 
 import { BuyRouts } from "./routes/profile/user/BuyRouts";
 import { ordersRouts } from "./routes/profile/user/ordersRouts";
+
+import { mainGlobal } from "./routes/profile/global/mainGlobal";
 // import { add } from "./routes/profile/partner/add";
 // import { get_points } from "./routes/profile/partner/get_points";
 // import { images } from "./routes/profile/partner/images";
@@ -253,6 +255,8 @@ app.use(aboutMeRouter);
 app.use(updateMePassword);
 
 app.use(GdsRouts);
+
+app.use(mainGlobal);
 
 app.use(ConfigRouts);
 

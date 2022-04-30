@@ -269,6 +269,25 @@ export default {
           align: "center",
         },
       ],
+      headers2: [
+        {
+          text: "Название карты",
+          align: "start",
+          filterable: true,
+          value: "name",
+        },
+        { text: "Цена продажи", value: "price" },
+        { text: "Количество", value: "availability" },
+        { text: "Валюта на карте", value: "currency_card" },
+        { text: "Валюта продажи", value: "сurrency_sale" },
+        { text: "Баланс карт", value: "balance" },
+        {
+          text: "Действия",
+          value: "actions",
+          filterable: false,
+          align: "center",
+        },
+      ],
     };
   },
   computed: {

@@ -23,12 +23,16 @@
               v-model="cardsLengt"
               solo
               type="number"
+              min="1"
+              pattern="^[0-9]"
+              step="1"
+              max="300"
               clearable
               placeholder="Введите количество"
             ></v-text-field>
           </v-col>
           <v-col cols="12">
-            Цена за 1: {{ selectedItem.price }}
+            Цена: {{ selectedItem.price }}
             {{ selectedItem.сurrency_sale }}</v-col
           >
           <v-col cols="12">
@@ -79,6 +83,9 @@
         </template>
         <template v-slot:item.balance="{ item }">
           {{ item.balance }} {{ item.currency_card }}
+        </template>
+        <template v-slot:item.price="{ item }">
+          {{ item.price }} {{ item.сurrency_sale }}
         </template>
       </v-data-table>
     </v-card>
@@ -151,9 +158,8 @@ export default {
           filterable: true,
           value: "name",
         },
-        { text: "Цена продажи", value: "price" },
+        { text: "Цена", value: "price" },
         { text: "Количество", value: "availability" },
-        { text: "Валюта продажи", value: "сurrency_sale" },
         { text: "Баланс на карте", value: "balance" },
         {
           text: "Действия",
@@ -202,6 +208,7 @@ export default {
       setDubleTable: "categories/setDubleTable",
     }),
     async hendlerBuy() {
+      this.cardsLengt = parseInt(this.cardsLengt);
       if (this.calculatedPrice > this.balance) {
         return this.$vueOnToast.pop(
           "error",
@@ -214,6 +221,7 @@ export default {
           "Вы выбрали для заказа больше чем доступно"
         );
       }
+
       console.log(this.selectedItem);
       const { data } = await this.$axios.post("/profile/user/buy", {
         buy_price: this.calculatedPrice,

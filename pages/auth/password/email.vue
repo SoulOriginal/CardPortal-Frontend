@@ -1,11 +1,12 @@
 <template>
   <div class="row">
     <div class="col-lg-8 m-auto email">
-      <card id="home-app-bar">
+      <v-card class="pa-3" min-width="350">
         <form @submit.prevent="send" @keydown="form.onKeydown($event)">
           <div class="card-header">{{ $t("reset_password") }}</div>
-          <div class="form-group row"></div>
           <v-text-field
+            width="500"
+            min-width="500"
             v-model="form.email"
             :label="$t('email')"
             prepend-icon="mdi-email"
@@ -13,17 +14,23 @@
             required
           />
           <!-- Submit Button -->
-          <div class="form-group row">
-            <div class="col-md-9 ml-md-auto">
-              <v-button
-                :loading="form.busy"
-                class="mr-2 v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default primary"
-                >{{ $t("send_password_reset_link") }}</v-button
-              >
-            </div>
-          </div>
+          <v-row
+            no-gutters
+            justify-content="center"
+            align="center"
+            justify="center"
+            align-content="center"
+          >
+            <v-btn
+              type="sumbit"
+              color="red"
+              :disabled="!form.email"
+              @click="send"
+              >{{ $t("send_password_reset_link") }}</v-btn
+            >
+          </v-row>
         </form>
-      </card>
+      </v-card>
     </div>
   </div>
 </template>
@@ -45,6 +52,13 @@ export default {
   }),
   methods: {
     async send() {
+      if (
+        !/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
+          this.form.email
+        )
+      ) {
+        return this.$t("validate.email_validate");
+      }
       var DataEmail = await this.$axios
         .post(`/user/restore/email`, {
           email: this.form.email,

@@ -33,7 +33,7 @@ module.exports = {
       },
     ],
   },
-
+  components: false,
   loading: { color: "#007bff" },
   // loading: "~/components/LoadingBar.vue",
   // loading: {
@@ -61,7 +61,8 @@ module.exports = {
     { src: "~plugins/persistedstate.js", ssr: false },
     { src: "~plugins/bottom-sheet.js", ssr: false },
     // "~plugins/fontawesome",
-    "~plugins/base",
+    // "~plugins/base",
+    { src: "~plugins/base", ssr: false },
     "~/plugins/notifications.js",
     // "~/plugins/imageViewer.js",
     // "~/plugins/google-autocomplete.js",

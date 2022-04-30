@@ -39,53 +39,91 @@
         </v-card>
       </v-dialog>
       <v-dialog width="600" v-model="dataModalInfo">
-        <v-card class="pa-3" v-if="dataModalInfoDataIndex !== null">
-          <v-row no-gutters>
-            <v-col cols="12" align="center" justify="center">
-              <v-img
-                class="product--img"
-                max-height="170"
-                max-width="190"
-                contain
-                src="https://static.qiwi.com/img/qiwi_com/cards/virtual/list.png"
-                lazy-src="https://static.qiwi.com/img/qiwi_com/cards/virtual/list.png"
-              ></v-img>
-            </v-col>
-          </v-row>
-
-          <span
-            >Начальный баланс:{{
-              orders[dataModalInfoDataIndex].info_card.balance
-            }}</span
-          >
-          <br />
-          <span
-            >Начальное название :{{
-              orders[dataModalInfoDataIndex].info_card.name
-            }}</span
-          >
-          <br />
-          <br />
-          <span>Комментарий :{{ orders[dataModalInfoDataIndex].comment }}</span>
-        </v-card>
+        <cardDesign :order_info="orders[dataModalInfoDataIndex]" />
       </v-dialog>
       <v-btn fab class="mb-3" @click="setDubleTable(!duble_table)"
         ><v-icon
           >mdi-{{ duble_table ? "table" : "table-multiple" }}</v-icon
         ></v-btn
       >
+      <v-row no-gutters>
+        <v-col cols="12">
+          <div v-if="selected_true.length > 0" class="mt-2">
+            <v-btn
+              color="accent-4 white--text red"
+              small
+              @click="handleMultiplay('block')"
+              >Заблокировать</v-btn
+            >
+            <v-btn
+              color="accent-4 white--text green"
+              small
+              @click="handleMultiplay('activate')"
+              >Активировать</v-btn
+            >
+            <v-btn
+              color="blue accent-4 white--text"
+              small
+              @click="handleMultiplay('txt')"
+              >TXT
+            </v-btn>
+            <v-btn
+              color="orange accent-4 white--text"
+              small
+              @click="handleMultiplay('csv')"
+              >CSV
+            </v-btn>
+          </div>
+        </v-col>
+      </v-row>
       <v-card class="pa-2" v-if="sortedDataByDubleTable(true).length > 0">
         <v-card-title>
-          <v-text-field
-            v-model="search_active"
-            append-icon="mdi-magnify"
-            label="Поиск..."
-            single-line
-            hide-details
-          ></v-text-field>
+          <!-- <v-row no-gutters>
+            <v-col cols="12">
+              <v-text-field
+                v-model="search_active"
+                append-icon="mdi-magnify"
+                label="Поиск..."
+                single-line
+                hide-details
+              ></v-text-field
+            ></v-col>
+            <v-col cols="12">
+              <div v-if="selected_true.length > 0" class="mt-2">
+                <v-btn
+                  color="accent-4 white--text red"
+                  small
+                  @click="handleMultiplay('block')"
+                  >Заблокировать</v-btn
+                >
+                <v-btn
+                  color="accent-4 white--text green"
+                  small
+                  @click="handleMultiplay('activate')"
+                  >Активировать</v-btn
+                >
+                <v-btn
+                  color="blue accent-4 white--text"
+                  small
+                  @click="handleMultiplay('txt')"
+                  >TXT
+                </v-btn>
+                <v-btn
+                  color="orange accent-4 white--text"
+                  small
+                  @click="handleMultiplay('csv')"
+                  >CSV
+                </v-btn>
+              </div>
+            </v-col>
+          </v-row> -->
         </v-card-title>
         <v-data-table
           :headers="headers"
+          show-select
+          item-key="_id"
+          :single-select="false"
+          v-model="selected_true"
           :items="sortedDataByDubleTable(true)"
           :search="search_active"
           multi-sort
@@ -97,7 +135,10 @@
               :color="item.status ? 'red' : 'green'"
               small
               @click="handleActivateCurd(item._id, item.status, index)"
-              >{{ !item.status ? "Активировать" : "Заблокировать" }}</v-btn
+            >
+              <v-icon color="white"
+                >mdi-{{ !item.status ? "lock" : "lock-open" }}</v-icon
+              ></v-btn
             >
 
             <v-btn
@@ -108,6 +149,20 @@
               <v-icon color="white">mdi-information-variant</v-icon></v-btn
             >
             <v-btn
+              color="blue accent-4 white--text"
+              small
+              @click="downloadCsvOrTxt([item._id], 'csv')"
+            >
+              <v-icon color="white">mdi-file-table-outline</v-icon></v-btn
+            >
+            <v-btn
+              color="blue accent-4 white--text"
+              small
+              @click="downloadCsvOrTxt([item._id], 'txt')"
+            >
+              <v-icon color="white">mdi-file-document-outline</v-icon></v-btn
+            >
+            <v-btn
               color="red accent-4 white--text"
               small
               @click="ModalEditIsOpenToogleTrue(item._id, index)"
@@ -116,6 +171,12 @@
           </template>
           <template v-slot:item.balance="{ item }">
             {{ item.balance }} {{ item.currency_card }}
+          </template>
+          <template v-slot:item.card_end="{ item }">
+            <div>{{ item.card_month }}/{{ item.card_year.slice(-2) }}</div>
+          </template>
+          <template v-slot:item.balance="{ item }">
+            <div>{{ item.balance }} {{ item.info_card.currency_card }}</div>
           </template>
           <template v-slot:item.name="{ item }">
             <strong v-if="item.custom_name" class="red--text text--lighten-1">{{
@@ -131,9 +192,13 @@
               :open-on-click="true"
             >
               <template v-slot:activator="{ on, attrs }">
-                <v-chip v-bind="attrs" v-on="on">{{
-                  item.comment ? "Да" : "Нет"
-                }}</v-chip>
+                <v-chip v-bind="attrs" v-on="on">
+                  <v-icon color="blue"
+                    >mdi-{{
+                      item.comment ? "comment-eye" : "comment-off"
+                    }}</v-icon
+                  >
+                </v-chip>
               </template>
               <span>{{
                 item.comment ? item.comment : "Вы еще не написали"
@@ -158,6 +223,10 @@
 
         <v-data-table
           :headers="headers"
+          show-select
+          item-key="_id"
+          :single-select="false"
+          v-model="selected_true"
           :items="sortedDataByDubleTable(false)"
           :search="search_active"
           multi-sort
@@ -169,8 +238,11 @@
               :color="item.status ? 'red' : 'green'"
               small
               @click="handleActivateCurd(item._id, item.status, index)"
-              >{{ !item.status ? "Активировать" : "Заблокировать" }}</v-btn
             >
+              <v-icon color="white"
+                >mdi-{{ !item.status ? "lock" : "lock-open" }}</v-icon
+              >
+            </v-btn>
 
             <v-btn
               color="blue accent-4 white--text"
@@ -180,20 +252,43 @@
               <v-icon color="white">mdi-information-variant</v-icon></v-btn
             >
             <v-btn
+              color="blue accent-4 white--text"
+              small
+              @click="downloadCsvOrTxt([item._id], 'csv')"
+            >
+              <v-icon color="white">mdi-file-table-outline</v-icon></v-btn
+            >
+            <v-btn
+              color="blue accent-4 white--text"
+              small
+              @click="downloadCsvOrTxt([item._id], 'txt')"
+            >
+              <v-icon color="white">mdi-file-document-outline</v-icon></v-btn
+            >
+            <v-btn
               color="red accent-4 white--text"
               small
               @click="ModalEditIsOpenToogleTrue(item._id, index)"
               ><v-icon color="white">mdi-pencil</v-icon>
             </v-btn>
           </template>
+          <template v-slot:item.card_end="{ item }">
+            <div>{{ item.card_month }}/{{ item.card_year.slice(-2) }}</div>
+          </template>
           <template v-slot:item.balance="{ item }">
             {{ item.balance }} {{ item.currency_card }}
+          </template>
+          <template v-slot:item.balance="{ item }">
+            <div>{{ item.balance }} {{ item.info_card.currency_card }}</div>
           </template>
           <template v-slot:item.name="{ item }">
             <strong v-if="item.custom_name" class="red--text text--lighten-1">{{
               item.custom_name
             }}</strong>
             <div v-else>{{ item.name }}</div>
+          </template>
+          <template v-slot:item.card_end="{ item }">
+            <div>{{ item.card_month }}/{{ item.card_year.slice(-2) }}}</div>
           </template>
           <template v-slot:item.comment="{ item }">
             <v-tooltip
@@ -203,9 +298,13 @@
               :open-on-click="true"
             >
               <template v-slot:activator="{ on, attrs }">
-                <v-chip v-bind="attrs" v-on="on">{{
-                  item.comment ? "Да" : "Нет"
-                }}</v-chip>
+                <v-chip v-bind="attrs" v-on="on">
+                  <v-icon color="blue"
+                    >mdi-{{
+                      item.comment ? "comment-eye" : "comment-off"
+                    }}</v-icon
+                  >
+                </v-chip>
               </template>
               <span>{{
                 item.comment ? item.comment : "Вы еще не написали"
@@ -221,14 +320,20 @@
 </template>
 
 <script>
+import { saveAs } from "file-saver";
 import { mapGetters, mapActions, mapState, mapMutations } from "vuex";
-
+import cardDesign from "@/components/greatCardDesign";
 export default {
   layout: "profile",
+  components: {
+    cardDesign,
+  },
   data() {
     return {
       dataModalEdit: {},
       dataModalInfo: false,
+      selected_true: [],
+      selected_false: [],
       dataModalInfoDataIndex: null,
       ModalEditIsOpen: false,
       search: null,
@@ -239,12 +344,13 @@ export default {
           filterable: true,
           value: "name",
         },
-        { text: "Баланс", value: "balance" },
-        { text: "Коментарий", value: "comment" },
-        { text: "CVV", value: "card_cvv" },
-        { text: "Номер карты", value: "card_number" },
         { text: "Тип", value: "type" },
-        { text: "Валидность", value: "card_cvv" },
+        { text: "Баланс", value: "balance" },
+        { text: "Номер карты", value: "card_number" },
+        { text: "Дата окончания", value: "card_end" },
+        { text: "CVV", value: "card_cvv" },
+        { text: "Коментарий", value: "comment" },
+
         {
           text: "Действия",
           value: "actions",
@@ -298,20 +404,60 @@ export default {
       this.dataModalInfo = true;
       this.dataModalInfoDataIndex = index;
     },
+    async handleMultiplay(userAction) {
+      if (this.selected_true.length === 0) return;
+      const selectedIds = this.selected_true.map((item) => item._id);
+      switch (userAction) {
+        case "block":
+          await this.$axios.put("/global/orders/multi/status", {
+            status: false,
+            selected_ids: selectedIds,
+          });
+          await this.featchOrders();
+          break;
+        case "activate":
+          await this.$axios.put("/global/orders/multi/status", {
+            status: true,
+            selected_ids: selectedIds,
+          });
+          await this.featchOrders();
+          break;
+      }
+      if (userAction == "txt" || userAction == "csv") {
+        this.downloadCsvOrTxt(selectedIds, userAction);
+      }
+      this.selected_true = [];
+    },
+    async downloadCsvOrTxt(ids, format) {
+      const { data } = await this.$axios.post("/global/orders/multi/download", {
+        selected_ids: ids,
+      });
+      let txtContent = data.rows.map((e) => e.join(";")).join("\n");
+      const type =
+        format === "txt"
+          ? "text/plain;charset=utf-8"
+          : "text/csv;charset=utf-8";
+      var blob = new Blob([txtContent], {
+        type,
+      });
+      saveAs(blob, `CardPortal-${this.$moment().format("L hh:mm")}.${format}`);
+    },
     ModalEditIsOpenToogleTrue(id) {
       this.ModalEditIsOpen = true;
-      this.dataModalEdit = this.orders
+      const filtredData = [...this.orders]
         .filter((val) => val._id === id)
         .map((val) => {
-          if (!val.comment) val.comment = null;
-          if (!val.custom_name) val.custom_name = null;
+          console.log(val);
+          // if (!val?.comment) val.comment = null;
+          // if (!val?.custom_name) val.custom_name = null;
           return {
             gds_id: val._id,
-            balance: val.balance,
-            comment: val.comment,
-            custom_name: val.custom_name,
+            balance: val.balance || 0,
+            comment: val.comment || null,
+            custom_name: val.custom_name || null,
           };
         })[0];
+      this.dataModalEdit = filtredData;
     },
   },
   async mounted() {
@@ -319,3 +465,9 @@ export default {
   },
 };
 </script>
+
+<style>
+.v-dialog {
+  margin: 0 !important;
+}
+</style>

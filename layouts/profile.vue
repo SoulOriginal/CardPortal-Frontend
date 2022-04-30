@@ -1,8 +1,6 @@
 <template>
   <v-app id="inspire">
     <toast-container></toast-container>
-    <!--       :clipped="$vuetify.breakpoint.lgAndUp"
-      :right="$vuetify.rtl" -->
     <v-navigation-drawer
       id="default-drawer"
       v-model="drawer"
@@ -22,9 +20,6 @@
 
       <div class="px-2" @click="mini = false">
         <v-list-item class="mb-0 justify-space-between pl-3">
-          <!-- <v-list-item-avatar>
-            <v-img src="1.svg" />
-          </v-list-item-avatar> -->
           <v-img lazy-src="1.svg" src="1.svg" />
           <v-list-item-content class="pl-2">
             <v-list-item-title class="text-h5 white--text">
@@ -72,8 +67,55 @@
         </v-list>
       </div>
     </v-navigation-drawer>
+    <preload :onlySpinner="!user" :size="60" :end="!user" :opacity="1" />
+    <v-main v-if="user">
+      <vue-bottom-sheet
+        v-if="$vuetify.breakpoint.width <= 960"
+        ref="myBottomSheet"
+        :swipe-able="true"
+        :background-scrollable="false"
+        :overlay="true"
+        max-height="50%"
+      >
+        <div class="bottom-sheet__container pa-3">
+          <v-list expand nav v-bind="$attrs" v-on="$listeners">
+            <template v-for="(item, i) in items">
+              <v-list-item
+                :key="`group_two-${i}`"
+                exact-path
+                :href="item.href"
+                :rel="item.href ? 'nofollow' : undefined"
+                :target="item.href ? '_blank' : undefined"
+                :to="{ name: item.to }"
+                active-class="red white--text "
+                class="py-1 dark_my white--text"
+                link
+                v-bind="$attrs"
+                v-on="$listeners"
+              >
+                <v-list-item-icon
+                  v-if="!item.icon"
+                  color="white"
+                  class="text-caption text-uppercase justify-center ml-1 my-2 align-self-center"
+                >
+                  {{ title }}
+                </v-list-item-icon>
 
-    <v-main>
+                <v-list-item-icon
+                  v-if="item.icon"
+                  class="my-2 align-self-center"
+                >
+                  <v-icon color="white" v-text="item.icon" />
+                </v-list-item-icon>
+
+                <v-list-item-content v-if="item.title">
+                  <v-list-item-title v-text="item.title" />
+                </v-list-item-content>
+              </v-list-item>
+            </template>
+          </v-list>
+        </div>
+      </vue-bottom-sheet>
       <v-container fluid>
         <v-app-bar
           id="default-app-bar"
@@ -122,54 +164,11 @@
         <v-divider></v-divider>
       </v-card>
     </v-dialog>
-    <vue-bottom-sheet
-      v-if="$vuetify.breakpoint.width <= 960"
-      ref="myBottomSheet"
-      :swipe-able="true"
-      :background-scrollable="false"
-      :overlay="true"
-      max-height="50%"
-    >
-      <div class="bottom-sheet__container pa-3">
-        <v-list expand nav v-bind="$attrs" v-on="$listeners">
-          <template v-for="(item, i) in items">
-            <v-list-item
-              :key="`group_two-${i}`"
-              exact-path
-              :href="item.href"
-              :rel="item.href ? 'nofollow' : undefined"
-              :target="item.href ? '_blank' : undefined"
-              :to="{ name: item.to }"
-              active-class="red white--text "
-              class="py-1 dark_my white--text"
-              link
-              v-bind="$attrs"
-              v-on="$listeners"
-            >
-              <v-list-item-icon
-                v-if="!item.icon"
-                color="white"
-                class="text-caption text-uppercase justify-center ml-1 my-2 align-self-center"
-              >
-                {{ title }}
-              </v-list-item-icon>
-
-              <v-list-item-icon v-if="item.icon" class="my-2 align-self-center">
-                <v-icon color="white" v-text="item.icon" />
-              </v-list-item-icon>
-
-              <v-list-item-content v-if="item.title">
-                <v-list-item-title v-text="item.title" />
-              </v-list-item-content>
-            </v-list-item>
-          </template>
-        </v-list>
-      </div>
-    </vue-bottom-sheet>
   </v-app>
 </template>
 
 <script>
+import preload from "@/components/LoadingBar";
 import { mapGetters } from "vuex";
 import { loadMessages } from "~/plugins/i18n";
 export default {
@@ -202,7 +201,9 @@ export default {
       },
     ],
   }),
-
+  components: {
+    preload,
+  },
   computed: mapGetters({
     locale: "lang/locale",
     locales: "lang/locales",

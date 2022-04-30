@@ -439,6 +439,10 @@
         :headers="headers"
         :items="gds"
         :search="search"
+        item-key="_id"
+        sort-by="name"
+        group-by="info_card._id"
+        show-group-by
         multi-sort
         :sort-desc="[false, true]"
       >
@@ -521,7 +525,7 @@ export default {
           text: "Название карты",
           align: "start",
           filterable: true,
-          value: "cnf_id",
+          value: "name",
         },
         { text: "Баланс", value: "balance" },
         { text: "CVV", value: "card_cvv" },
