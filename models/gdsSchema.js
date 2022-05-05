@@ -15,6 +15,12 @@ const gdsSchema = new mongoose.Schema(
     status: { type: Boolean, default: true },
     opened_date: { type: Date },
     create_date: { type: Date, default: Date.now },
+    order_number: {
+      type: Number,
+      default: (generateRandom = () => {
+        return Math.floor(Math.random() * 9999999999);
+      }),
+    },
   },
   {
     versionKey: false,

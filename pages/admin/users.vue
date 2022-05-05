@@ -2,8 +2,102 @@
   <div>
     <v-btn @click="changeTable(`user`)" color="blue">Get users</v-btn>
     <v-btn @click="changeTable(`admin`)" color="green">Get Admins</v-btn>
+    <pre>
+      {{ gds }}
+    </pre>
+    <v-row no-gutters>
+      <v-col cols="3">
+        <v-text-field
+          v-model="users.balance"
+          type="number"
+          solo-inverted
+          label="balance"
+          placeholder="balance"
+        ></v-text-field>
+      </v-col>
+      <v-col cols="3">
+        <v-text-field
+          v-model="users.email"
+          solo-inverted
+          type="email"
+          label="email"
+          placeholder="email"
+        ></v-text-field>
+      </v-col>
+      <v-col cols="3">
+        <v-select
+          solo-inverted
+          v-model="users.role"
+          :items="roles"
+          item-text="name"
+          item-value="value"
+        ></v-select>
+      </v-col>
+      <v-col cols="3">
+        <v-select
+          solo-inverted
+          v-model="users.verified"
+          :items="verified"
+          item-text="name"
+          item-value="value"
+        ></v-select>
+      </v-col>
+      <v-col cols="12">
+        <v-btn @click="getUserTwice" block color="red">Users Filtyer</v-btn>
+      </v-col>
+    </v-row>
 
-    <v-data-table
+    <v-row no-gutters>
+      <v-col cols="3">
+        <v-text-field
+          v-model="gds.order_number"
+          type="number"
+          solo-inverted
+          label="order_number"
+          placeholder="order_number"
+        ></v-text-field>
+      </v-col>
+      <v-col cols="3">
+        <v-text-field
+          v-model="gds.card_cvv"
+          solo-inverted
+          type="number"
+          label="card_cvv"
+          placeholder="card_cvv"
+        ></v-text-field>
+      </v-col>
+      <v-col cols="3">
+        <v-text-field
+          v-model="gds.card_number"
+          solo-inverted
+          type="number"
+          label="card_number"
+          placeholder="card_number"
+        ></v-text-field>
+      </v-col>
+      <v-col cols="3">
+        <v-select
+          solo-inverted
+          v-model="gds.card_month"
+          :items="status"
+          item-text="name"
+          item-value="value"
+        ></v-select>
+      </v-col>
+      <v-col cols="3">
+        <v-select
+          solo-inverted
+          v-model="gds.card_month"
+          :items="status"
+          item-text="name"
+          item-value="value"
+        ></v-select>
+      </v-col>
+      <v-col cols="12">
+        <v-btn @click="getUserTwice" block color="red">Users Filtyer</v-btn>
+      </v-col>
+    </v-row>
+    <!-- <v-data-table
       :page.sync="page"
       :items-per-page="itemsPerPage"
       :headers="nowHeader"
@@ -32,7 +126,7 @@
         :length="pageCount"
         @input="gagination($event)"
       ></v-pagination>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -41,11 +135,38 @@ export default {
   layout: "admin",
   data() {
     return {
+      users: {
+        balance: null,
+        role: null,
+        email: null,
+        verified: null,
+      },
+      gds: {
+        order_number: null,
+        card_cvv: null,
+        card_number: null,
+        card_month: null,
+        status: null,
+      },
+      roles: [
+        { name: "admin", value: "admin" },
+        { name: "user", value: "user" },
+        { name: "Очистить", value: null },
+      ],
+      verified: [
+        { name: "Верефицирован", value: true },
+        { name: "Не верефицирован", value: false },
+        { name: "Очистить", value: null },
+      ],
+      status: [
+        { name: "Активна", value: true },
+        { name: "Не Активна", value: false },
+        { name: "Очистить", value: null },
+      ],
       role: "user",
       page: 1,
       pageCount: 1,
       itemsPerPage: 10,
-      users: [],
       nowHeader: null,
       headers_user: [
         {
@@ -62,16 +183,27 @@ export default {
   },
 
   methods: {
+    async getUserTwice() {
+      if (!this.users.balance) {
+        delete this.users.balance;
+      } else {
+        this.users.balance = parseInt(this.users.balance);
+      }
+      if (!this.users.role) delete this.users.role;
+      if (!this.users.email) delete this.users.email;
+      if (!this.users.verified) delete this.users.verified;
+      await this.$axios.post(`/admin/users/all`, { users: this.users });
+    },
     async getUsers({
       limit = this.itemsPerPage,
       page = this.page,
       role = this.role,
     }) {
-      const { data } = await this.$axios.get(
+      const { data } = await this.$axios.post(
         `/admin/users/all?limit=${limit}&page=${page}&role=${role}`
       );
       this.pageCount = data.totalPages;
-      this.users = data.users;
+      // this.users = data.users;
     },
     gagination(page) {
       this.getUsers({ page });
