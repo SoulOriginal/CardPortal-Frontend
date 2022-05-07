@@ -397,8 +397,7 @@
 
           <v-stepper-content step="3">
             <v-card class="mb-12" color="grey lighten-1">
-              <v-data-table :headers="headers_upload" :items="parse_res"
-                >>
+              <v-data-table :headers="headers_upload" :items="parse_res">
                 <template v-slot:item.card_data="{ item }">
                   {{ item.card_month }}/{{ item.card_year.slice(-2) }}
                 </template>

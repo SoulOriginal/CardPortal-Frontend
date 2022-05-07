@@ -345,6 +345,7 @@ export default {
           value: "name",
         },
         { text: "Тип", value: "type" },
+        { text: "Номер заказа", value: "order_number" },
         { text: "Баланс", value: "balance" },
         { text: "Номер карты", value: "card_number" },
         { text: "Дата окончания", value: "card_end" },

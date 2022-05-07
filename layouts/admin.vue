@@ -129,19 +129,24 @@ export default {
 
     items: [
       {
-        title: "Add Card Conf",
-        icon: "mdi-view-dashboard",
+        title: "Категории",
+        icon: "mdi-view-grid-plus",
         to: "admin",
       },
       {
-        title: "Add Card To Conf",
-        icon: "mdi-account",
+        title: "Карты",
+        icon: "mdi-credit-card-plus",
         to: "admin.cards",
       },
       {
-        title: "Users",
+        title: "Пользователи",
         icon: "mdi-account",
         to: "admin.users",
+      },
+      {
+        title: "Номер заказа",
+        icon: "mdi-order-bool-ascending",
+        to: "admin.get_by_order_number",
       },
     ],
   }),

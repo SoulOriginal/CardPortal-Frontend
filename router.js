@@ -25,6 +25,11 @@ const routes = [
     name: "admin.cards",
     component: page("admin/cards.vue"),
   },
+  {
+    path: "/admin/find/by/order/nuber",
+    name: "admin.get_by_order_number",
+    component: page("admin/get_by_order_number.vue"),
+  },
   { path: "/user", name: "user", component: page("products.vue") },
   { path: "/user/orders", name: "orders", component: page("orders.vue") },
   {

@@ -1,10 +1,5 @@
 <template>
   <div>
-    <v-btn @click="changeTable(`user`)" color="blue">Get users</v-btn>
-    <v-btn @click="changeTable(`admin`)" color="green">Get Admins</v-btn>
-    <pre>
-      {{ gds }}
-    </pre>
     <v-row no-gutters>
       <v-col cols="3">
         <v-text-field
@@ -46,63 +41,28 @@
         <v-btn @click="getUserTwice" block color="red">Users Filtyer</v-btn>
       </v-col>
     </v-row>
-
-    <v-row no-gutters>
-      <v-col cols="3">
+    <v-dialog v-model="edit_user" max-width="700px">
+      <v-card class="pa-4" v-if="timeOpenedModal">
         <v-text-field
-          v-model="gds.order_number"
-          type="number"
           solo-inverted
-          label="order_number"
-          placeholder="order_number"
+          v-model="timeOpenedModal.balance"
+          placeholder="Баланс"
+          type="number"
         ></v-text-field>
-      </v-col>
-      <v-col cols="3">
         <v-text-field
-          v-model="gds.card_cvv"
           solo-inverted
-          type="number"
-          label="card_cvv"
-          placeholder="card_cvv"
+          v-model="timeOpenedModal.email"
+          placeholder="Почта"
         ></v-text-field>
-      </v-col>
-      <v-col cols="3">
-        <v-text-field
-          v-model="gds.card_number"
-          solo-inverted
-          type="number"
-          label="card_number"
-          placeholder="card_number"
-        ></v-text-field>
-      </v-col>
-      <v-col cols="3">
-        <v-select
-          solo-inverted
-          v-model="gds.card_month"
-          :items="status"
-          item-text="name"
-          item-value="value"
-        ></v-select>
-      </v-col>
-      <v-col cols="3">
-        <v-select
-          solo-inverted
-          v-model="gds.card_month"
-          :items="status"
-          item-text="name"
-          item-value="value"
-        ></v-select>
-      </v-col>
-      <v-col cols="12">
-        <v-btn @click="getUserTwice" block color="red">Users Filtyer</v-btn>
-      </v-col>
-    </v-row>
-    <!-- <v-data-table
+        <v-btn block color="red" @click="editUser">Сохранить</v-btn>
+      </v-card>
+    </v-dialog>
+    <v-data-table
       :page.sync="page"
       :items-per-page="itemsPerPage"
-      :headers="nowHeader"
+      :headers="headers_user"
       hide-default-footer
-      :items="users"
+      :items="dataAsync"
       class="elevation-1"
     >
       <template v-slot:item.create_date="{ item }">
@@ -115,9 +75,10 @@
           <span>{{ $moment(item.create_date).format("L hh:mm") }} </span>
         </v-tooltip>
       </template>
-      <template v-slot:item.partner>
-        <v-btn color="red">BAN</v-btn>
-        <v-btn color="green">unBAN</v-btn>
+      <template v-slot:item.actions="{ item }">
+        <v-btn color="red" @click="openModalById(item._id)">
+          <v-icon color="white">mdi-account-edit</v-icon>
+        </v-btn>
       </template>
     </v-data-table>
     <div class="text-center pt-2">
@@ -126,7 +87,7 @@
         :length="pageCount"
         @input="gagination($event)"
       ></v-pagination>
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -141,13 +102,9 @@ export default {
         email: null,
         verified: null,
       },
-      gds: {
-        order_number: null,
-        card_cvv: null,
-        card_number: null,
-        card_month: null,
-        status: null,
-      },
+      timeOpenedModal: {},
+      edit_user: false,
+      dataAsync: [],
       roles: [
         { name: "admin", value: "admin" },
         { name: "user", value: "user" },
@@ -167,7 +124,6 @@ export default {
       page: 1,
       pageCount: 1,
       itemsPerPage: 10,
-      nowHeader: null,
       headers_user: [
         {
           text: "Email",
@@ -178,6 +134,7 @@ export default {
         { text: "Верефецирован", value: "verified" },
         { text: "Баланс", value: "balance" },
         { text: "Дата создания", value: "create_date" },
+        { text: "Действия", value: "actions", sortable: false },
       ],
     };
   },
@@ -191,22 +148,32 @@ export default {
       }
       if (!this.users.role) delete this.users.role;
       if (!this.users.email) delete this.users.email;
-      if (!this.users.verified) delete this.users.verified;
-      await this.$axios.post(`/admin/users/all`, { users: this.users });
-    },
-    async getUsers({
-      limit = this.itemsPerPage,
-      page = this.page,
-      role = this.role,
-    }) {
+      if (this.users.verified === null) delete this.users.verified;
+      const limit = this.itemsPerPage,
+        page = this.page;
       const { data } = await this.$axios.post(
-        `/admin/users/all?limit=${limit}&page=${page}&role=${role}`
+        `/admin/users/all?limit=${limit}&page=${page}`,
+        {
+          users: this.users,
+        }
       );
+      this.dataAsync = data.data;
       this.pageCount = data.totalPages;
-      // this.users = data.users;
+    },
+    openModalById(id) {
+      this.timeOpenedModal = this.dataAsync.filter((v) => v._id === id)[0];
+      this.edit_user = true;
+    },
+    async editUser() {
+      var { balance, email, _id } = this.timeOpenedModal;
+      balance = parseInt(balance);
+      await this.$axios.put("/admin/user", { balance, email, _id });
+      this.getUserTwice();
+      this.edit_user = false;
     },
     gagination(page) {
-      this.getUsers({ page });
+      this.page = page;
+      this.getUserTwice();
     },
     changeTable(role) {
       this.role = role;
@@ -214,8 +181,7 @@ export default {
     },
   },
   created() {
-    this.nowHeader = this.headers_user;
-    this.getUsers({});
+    this.getUserTwice();
   },
 };
 </script>

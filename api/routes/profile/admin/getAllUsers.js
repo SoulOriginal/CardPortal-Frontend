@@ -2,7 +2,7 @@ import express from "express";
 import { validateRequest } from "../../../common/middlewares/validate-request";
 import { requireAuth } from "../../../common/middlewares/require-auth";
 import { currentUser } from "../../../common/middlewares/current-user";
-
+import { ObjectId } from "mongodb";
 const User = require("../../../../models/userSchema");
 const GdsSchema = require("../../../../models/gdsSchema");
 const configSchema = require("../../../../models/configSchema");
@@ -51,22 +51,42 @@ router.post(
         console.log(0);
         break;
     }
-    res.json({ payload12: data });
-    // const users = await User.find(role ? { role } : null)
-    //   .limit(limit * 1)
-    //   .skip((page - 1) * limit)
-    //   .sort({ _id: -1 })
-    //   .exec();
-    // const count = await User.countDocuments();
-    // res.json({
-    //   users,
-    //   totalPages: Math.ceil(count / limit),
-    //   currentPage: page,
-    // });
-    // } catch (error) {
-    //   res.json({ payload: error });
-    // }
+    if (Object.keys(data).length !== 0 || data !== (null || undefined)) {
+      const count = await User.countDocuments();
+      res.status(200).json({
+        data,
+        totalPages: Math.ceil(count / limit),
+        currentPage: page,
+      });
+    } else {
+      res.status(404).json("No Items");
+    }
   }
 );
+router.put(
+  "/admin/user",
+  validateRequest,
+  currentUser,
+  requireAuth,
+  async (req, res) => {
+    // try {
+    const existingUser = await User.findOne({ email: req.currentUser.email });
+    if (existingUser.role !== "admin") return res.json("no perm");
+    let { balance = 0, email, _id } = req.body;
+    const ids = new ObjectId(_id);
+    const data = await User.updateOne(
+      { _id: ids },
+      {
+        email,
+        balance,
+      }
+    );
 
+    if (Object.keys(data).length !== 0 || data !== (null || undefined)) {
+      res.status(200).json(data);
+    } else {
+      res.status(404).json("No Items");
+    }
+  }
+);
 export { router as getUsersListRouter };

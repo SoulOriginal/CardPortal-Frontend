@@ -5,7 +5,9 @@ import { currentUser } from "../../../common/middlewares/current-user";
 import { requireAuth } from "../../../common/middlewares/require-auth";
 import { validateRequest } from "../../../common/middlewares/validate-request";
 
+const GdsSchema = require("../../../../models/gdsSchema");
 const configSchema = require("../../../../models/configSchema");
+const User = require("../../../../models/userSchema");
 
 const router = express.Router();
 router.post(
@@ -141,6 +143,63 @@ router.get(
         },
       },
     ]);
+    if (Object.keys(data).length !== 0 || data !== (null || undefined)) {
+      res.status(200).json(data);
+    } else {
+      res.status(404).json("No Items");
+    }
+  }
+);
+router.get(
+  "/profile/admin/order",
+  validateRequest,
+  currentUser,
+  requireAuth,
+  async (req, res) => {
+    var { number } = req.query;
+    const { role } = req.currentUser;
+    if (role !== "admin") return res.status(404).json("No perm");
+    number = parseInt(number);
+    const data = await GdsSchema.aggregate([
+      { $match: { order_number: number } },
+      {
+        $set: {
+          cnf_id: {
+            $toObjectId: "$cnf_id",
+          },
+          user_id: {
+            $toObjectId: "$user_id",
+          },
+        },
+      },
+      {
+        $lookup: {
+          from: "configs",
+          localField: "cnf_id",
+          foreignField: "_id",
+          as: "info_conf",
+        },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "user_id",
+          foreignField: "_id",
+          as: "user_conf",
+        },
+      },
+      {
+        $addFields: { name: "$info_conf.name" },
+      },
+      { $unwind: "$name" },
+      {
+        $addFields: { info_card: "$info_conf" },
+      },
+      // { $unwind: "$info_card" },
+      // { $unwind: "$user_conf" },
+      { $unset: ["info_conf"] },
+    ]);
+
     if (Object.keys(data).length !== 0 || data !== (null || undefined)) {
       res.status(200).json(data);
     } else {
