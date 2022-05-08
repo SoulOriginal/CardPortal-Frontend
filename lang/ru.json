@@ -61,6 +61,11 @@
   },
   "privacy": "Конфиденциальность",
   "global": {
+    "layout": {
+      "products": "Продукты",
+      "orders": "Заказы",
+      "history": "История"
+    },
     "this_products": "Наши продукты",
     "user_select_to_order": "Вы выбрали для заказа",
     "order_orice": "Стоимость заказа",

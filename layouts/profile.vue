@@ -48,7 +48,6 @@
                 color="white"
                 class="text-caption text-uppercase justify-center ml-1 my-2 align-self-center"
               >
-                {{ title }}
               </v-list-item-icon>
 
               <v-list-item-avatar v-if="item.avatar">
@@ -60,7 +59,7 @@
               </v-list-item-icon>
 
               <v-list-item-content v-if="item.title">
-                <v-list-item-title v-text="item.title" />
+                <v-list-item-title v-text="$t(`global.layout.${item.title}`)" />
               </v-list-item-content>
             </v-list-item>
           </template>
@@ -98,7 +97,6 @@
                   color="white"
                   class="text-caption text-uppercase justify-center ml-1 my-2 align-self-center"
                 >
-                  {{ title }}
                 </v-list-item-icon>
 
                 <v-list-item-icon
@@ -109,7 +107,9 @@
                 </v-list-item-icon>
 
                 <v-list-item-content v-if="item.title">
-                  <v-list-item-title v-text="item.title" />
+                  <v-list-item-title
+                    v-text="$t(`global.layout.${item.title}`)"
+                  />
                 </v-list-item-content>
               </v-list-item>
             </template>
@@ -185,17 +185,17 @@ export default {
 
     items: [
       {
-        title: "Продукты",
+        title: "products",
         icon: "mdi-view-dashboard",
         to: "user",
       },
       {
-        title: "Заказы",
+        title: "orders",
         icon: "mdi-cart-check",
         to: "orders",
       },
       {
-        title: "История",
+        title: "history",
         icon: "mdi-clipboard-text-clock",
         to: "orders.history",
       },

@@ -1,6 +1,24 @@
 <template>
   <div>
     <h1>{{ $t("global.history") }}</h1>
+    <v-row no-gutters>
+      <v-col cols="12">
+        <div v-if="selected.length > 0" class="mt-2">
+          <v-btn
+            color="blue accent-4 white--text"
+            small
+            @click="downloadFile(null, 'txt', true)"
+            >TXT
+          </v-btn>
+          <v-btn
+            color="orange accent-4 white--text"
+            small
+            @click="downloadFile(null, 'csv', true)"
+            >CSV
+          </v-btn>
+        </div>
+      </v-col>
+    </v-row>
     <v-card class="pa-2">
       <v-card-title>
         <v-text-field
@@ -12,6 +30,10 @@
         ></v-text-field>
       </v-card-title>
       <v-data-table
+        show-select
+        item-key="_id"
+        :single-select="false"
+        v-model="selected"
         :headers="headers"
         :items="history"
         :search="search"
@@ -63,6 +85,7 @@ export default {
   data() {
     return {
       search: null,
+      selected: [],
       headers: [
         {
           text: this.$t("global.tables.card_name"),
@@ -96,13 +119,20 @@ export default {
     ...mapActions({
       featchOrdersHistory: "order/featchOrdersHistory",
     }),
-    async downloadFile(orderHistoryID, filteFormat) {
-      const { data } = await this.$axios.get(
-        "/profile/user/orders/history/download",
-        {
+    async downloadFile(orderHistoryID, filteFormat, isMulti) {
+      var data;
+      if (isMulti) {
+        const selectedIds = this.selected.map((item) => item._id);
+        data = await this.$axios.post("/global/orders/multi/download/history", {
+          orderHistoryIDS: selectedIds,
+        });
+      }
+      if (!isMulti) {
+        data = await this.$axios.get("/profile/user/orders/history/download", {
           params: { orderHistoryID },
-        }
-      );
+        });
+      }
+      data = data.data;
       let txtContent = data.rows.map((e) => e.join(";")).join("\n");
       const type =
         filteFormat === "txt"
