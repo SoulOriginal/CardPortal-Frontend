@@ -1,12 +1,12 @@
 <template>
   <div>
-    <h1>История</h1>
+    <h1>{{ $t("global.history") }}</h1>
     <v-card class="pa-2">
       <v-card-title>
         <v-text-field
           v-model="search"
           append-icon="mdi-magnify"
-          label="Поиск..."
+          :label="$t('global.search')"
           single-line
           hide-details
         ></v-text-field>
@@ -65,18 +65,18 @@ export default {
       search: null,
       headers: [
         {
-          text: "Название карт",
+          text: this.$t("global.tables.card_name"),
           align: "start",
           filterable: true,
           value: "name",
         },
-        { text: "Количество", value: "amount" },
-        { text: "Баланс карт", value: "card_balance" },
-        { text: "Стоимость", value: "buy_price" },
-        { text: "Оплата", value: "сurrency_buy" },
-        { text: "Дата", value: "create_date" },
+        { text: this.$t("global.tables.availability"), value: "amount" },
+        { text: this.$t("global.tables.balance_cards"), value: "card_balance" },
+        { text: this.$t("global.tables.price"), value: "buy_price" },
+        { text: this.$t("global.tables.pay"), value: "сurrency_buy" },
+        { text: this.$t("global.tables.date"), value: "create_date" },
         {
-          text: "Действия",
+          text: this.$t("global.tables.actions"),
           value: "actions",
           filterable: false,
           align: "center",

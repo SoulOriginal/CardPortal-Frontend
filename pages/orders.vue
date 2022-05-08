@@ -28,11 +28,15 @@
                 counter
                 hide-details
                 name="input-7-4"
-                :label="$t(`global.balance`)"
+                :label="$t(`global.tables.comment`)"
               ></v-textarea>
             </v-col>
-            <v-btn block class="mt-5" color="success" @click="handleUpdateCurd"
-              >Save</v-btn
+            <v-btn
+              block
+              class="mt-5"
+              color="success"
+              @click="handleUpdateCurd"
+              >{{ $t("global.save") }}</v-btn
             >
           </v-row>
         </v-card>
@@ -52,13 +56,13 @@
               color="accent-4 white--text red"
               small
               @click="handleMultiplay('block')"
-              >Заблокировать</v-btn
+              >{{ $t("global.disactive") }}</v-btn
             >
             <v-btn
               color="accent-4 white--text green"
               small
               @click="handleMultiplay('activate')"
-              >Активировать</v-btn
+              >{{ $t("global.activate") }}</v-btn
             >
             <v-btn
               color="blue accent-4 white--text"
@@ -200,7 +204,7 @@
                 </v-chip>
               </template>
               <span>{{
-                item.comment ? item.comment : "Вы еще не написали"
+                item.comment ? item.comment : $t("global.no_comment")
               }}</span>
             </v-tooltip>
           </template>
@@ -214,7 +218,7 @@
           <v-text-field
             v-model="search_active"
             append-icon="mdi-magnify"
-            label="Поиск..."
+            :label="$t('global.search')"
             single-line
             hide-details
           ></v-text-field>
@@ -306,7 +310,7 @@
                 </v-chip>
               </template>
               <span>{{
-                item.comment ? item.comment : "Вы еще не написали"
+                item.comment ? item.comment : $t("global.no_comment")
               }}</span>
             </v-tooltip>
           </template>

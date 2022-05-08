@@ -201,7 +201,7 @@
       >
         <v-divider></v-divider>
         <v-row no-gutters>
-          <v-col cols="6">Номер карты</v-col>
+          <v-col cols="6">{{ $t("global.tables.curd_number") }}</v-col>
           <v-col
             cols="6"
             data-ref="cardNumber"
@@ -210,13 +210,13 @@
             >{{ order_info.card_number }}</v-col
           >
 
-          <v-col cols="6">Дата оканчания</v-col>
+          <v-col cols="6">{{ $t("global.tables.end_date") }}</v-col>
           <v-col cols="6" data-ref="cardDate" id="cardMonth" @click="focusInput"
             >{{ order_info.card_month }}/{{
               order_info.card_year.slice(2, 4)
             }}</v-col
           >
-          <v-col cols="6">CVV</v-col>
+          <v-col cols="6">{{ $t("global.tables.cvv") }}</v-col>
           <v-col
             cols="6"
             data-ref="cardCvv"
@@ -227,13 +227,13 @@
         </v-row>
         <v-divider></v-divider>
         <v-row no-gutters>
-          <v-col cols="6">Тип карты</v-col>
+          <v-col cols="6">{{ $t("global.tables.type") }}</v-col>
           <v-col cols="6">{{ order_info.type }}</v-col>
 
-          <v-col cols="6">Оригинальное название</v-col>
+          <v-col cols="6">{{ $t("global.original_name") }}</v-col>
           <v-col cols="6">{{ order_info.name }}</v-col>
 
-          <v-col cols="6">Баланс</v-col>
+          <v-col cols="6">{{ $t("global.balance") }}</v-col>
           <v-col cols="6"
             >{{ order_info.balance }}
             {{ order_info.info_card.currency_card }}</v-col

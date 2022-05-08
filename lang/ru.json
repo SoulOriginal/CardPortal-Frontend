@@ -69,10 +69,16 @@
     "pay": "Оплатить",
     "buy": "Купить",
     "edit": "Редактирование",
+    "activate": "Активировать",
+    "disactive": "Заблокировать",
+    "save": "Сохранить",
+    "history": "История",
     "search": "Поиск...",
+    "original_name": "Оригинальное название",
     "product_availability_true": "В наличии",
     "product_availability_false": "Отсутствует",
     "balance": "Баланс",
+    "no_comment": "Вы еще не написали",
     "availability": "Наличие",
     "buy_for": "Заказать за",
     "forms": {
@@ -91,7 +97,10 @@
       "comment": "Коментарий",
       "balance": "Баланс на карте",
       "availability": "Количество",
-      "actions": "Действия"
+      "actions": "Действия",
+      "balance_cards": "Баланс карт",
+      "pay": "Оплатa",
+      "date": "Дата"
     }
   },
   "admin": {
