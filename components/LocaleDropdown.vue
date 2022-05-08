@@ -38,6 +38,7 @@ export default {
       const newLocale = this.locale === "en" || null || undefined ? "ru" : `en`;
       loadMessages(newLocale);
       this.$store.dispatch("lang/setLocale", { locale: newLocale });
+      this.$router.go(this.$router.currentRoute);
 
       // if (this.$i18n.locale !== locale) {
       //   loadMessages(locale);

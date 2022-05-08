@@ -203,6 +203,7 @@ export default {
   }),
   components: {
     preload,
+    LocaleDropdown: () => import("~/components/LocaleDropdown"),
   },
   computed: mapGetters({
     locale: "lang/locale",

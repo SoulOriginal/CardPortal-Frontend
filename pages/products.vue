@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Наши продукты</h1>
+    <h1>{{ $t("global.this_products") }}</h1>
     <v-btn fab small @click="setDubleTable(!duble_table)" class="ma-3"
       ><v-icon>{{
         duble_table ? `mdi-format-list-bulleted-type` : `mdi-table-large`
@@ -14,7 +14,7 @@
           </v-col> -->
           <v-col cols="12">
             <h3 class="text-center">
-              Вы выбрали для заказа:
+              {{ $t("global.user_select_to_order") }}
               <strong>{{ selectedItem.name }}</strong>
             </h3>
           </v-col>
@@ -28,39 +28,42 @@
               step="1"
               max="300"
               clearable
-              placeholder="Введите количество"
+              :placeholder="$t(`global.forms.typeing_counters`)"
             ></v-text-field>
           </v-col>
           <v-col cols="12">
-            Цена: {{ selectedItem.price }}
+            {{ $t("global.tables.price") }}: {{ selectedItem.price }}
             {{ selectedItem.сurrency_sale }}</v-col
           >
           <v-col cols="12">
-            Стоимость заказа: {{ calculatedPrice }}
+            {{ $t("global.order_orice") }}: {{ calculatedPrice }}
             {{ selectedItem.сurrency_sale }}</v-col
           >
           <v-col cols="12">
-            Доступно на балансе:
+            {{ $t("global.balance_aliviable") }}:
             <v-chip outlined color="orange"
               >{{ balance }} {{ balance_сurrency }}</v-chip
             ></v-col
           >
           <v-col cols="12">
-            Баланс после покупки:
+            {{ $t("global.balance_after_buy") }}:
             <v-chip outlined color="blue"
               >{{ calculatedPriceAfterBuy }} {{ balance_сurrency }}</v-chip
             ></v-col
           >
         </v-row>
-        <v-btn block class="mt-3" @click="hendlerBuy"> Оплатить</v-btn>
+        <v-btn block class="mt-3" @click="hendlerBuy">
+          {{ $t("global.pay") }}</v-btn
+        >
       </v-card>
     </v-dialog>
     <v-card class="pa-2" v-if="duble_table">
+      {{ $t("global.tables.price") }}
       <v-card-title>
         <v-text-field
           v-model="search"
           append-icon="mdi-magnify"
-          label="Поиск..."
+          :label="$t(`global.search`)"
           single-line
           hide-details
         ></v-text-field>
@@ -78,7 +81,7 @@
             color="red accent-4 white--text"
             small
             @click="openModalBuy(item._id)"
-            >Купить
+            >{{ $t("global.buy") }}
           </v-btn>
         </template>
         <template v-slot:item.balance="{ item }">
@@ -113,14 +116,17 @@
                 :color="product.availability === 0 ? `red` : `blue`"
                 :outlined="product.availability === 0 ? true : false"
                 >{{
-                  product.availability === 0 ? "Отсутствует" : "В наличии"
+                  product.availability === 0
+                    ? $t("global.product_availability_false")
+                    : $t("global.product_availability_true")
                 }}</v-chip
               >
               <v-chip close-icon="mdi-delete" color="blue" outlined
-                >Баланс: <strong class="ml-1">{{ product.balance }}</strong>
+                >{{ $t("global.balance") }}:
+                <strong class="ml-1">{{ product.balance }}</strong>
               </v-chip>
               <v-chip close-icon="mdi-delete" color="blue" outlined
-                >Наличие: {{ product.availability }} шт
+                >{{ $t("global.availability") }}: {{ product.availability }}
               </v-chip>
             </div>
           </div>
@@ -131,7 +137,7 @@
               color="#FF8C00"
               @click="openModalBuy(product._id)"
               :disabled="product.availability === 0"
-              >Заказать за {{ product.price }}
+              >{{ $t("global.buy_for") }}{{ product.price }}
               {{ product.сurrency_sale }}</v-btn
             >
           </div>
@@ -153,16 +159,16 @@ export default {
       selectedItem: {},
       headers: [
         {
-          text: "Название карты",
+          text: this.$t("global.tables.card_name"),
           align: "start",
           filterable: true,
           value: "name",
         },
-        { text: "Цена", value: "price" },
-        { text: "Количество", value: "availability" },
-        { text: "Баланс на карте", value: "balance" },
+        { text: this.$t("global.tables.price"), value: "price" },
+        { text: this.$t("global.tables.availability"), value: "availability" },
+        { text: this.$t("global.tables.balance"), value: "balance" },
         {
-          text: "Действия",
+          text: this.$t("global.tables.actions"),
           value: "actions",
           filterable: false,
           align: "center",

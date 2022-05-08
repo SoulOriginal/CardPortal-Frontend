@@ -5,19 +5,19 @@
         <v-card class="pa-3">
           <v-row no-gutters>
             <v-col cols="12">
-              <h3>Редактирование</h3>
+              <h3>{{ $t("global.edit") }}</h3>
               <v-text-field
                 v-model="dataModalEdit.custom_name"
                 solo-inverted
                 autofocus
-                placeholder="Новое название"
+                :placeholder="$t(`global.forms.new_name`)"
               ></v-text-field>
             </v-col>
             <v-col cols="12">
               <v-text-field
                 v-model="dataModalEdit.balance"
                 solo-inverted
-                placeholder="Баланс"
+                :placeholder="$t(`global.balance`)"
               ></v-text-field>
             </v-col>
             <v-col cols="12">
@@ -28,8 +28,7 @@
                 counter
                 hide-details
                 name="input-7-4"
-                label="Комментарий"
-                value="Купил мопса"
+                :label="$t(`global.balance`)"
               ></v-textarea>
             </v-col>
             <v-btn block class="mt-5" color="success" @click="handleUpdateCurd"
@@ -339,21 +338,24 @@ export default {
       search: null,
       headers: [
         {
-          text: "Название карты",
+          text: this.$t("global.tables.card_name"),
           align: "start",
           filterable: true,
           value: "name",
         },
-        { text: "Тип", value: "type" },
-        { text: "Номер заказа", value: "order_number" },
-        { text: "Баланс", value: "balance" },
-        { text: "Номер карты", value: "card_number" },
-        { text: "Дата окончания", value: "card_end" },
-        { text: "CVV", value: "card_cvv" },
-        { text: "Коментарий", value: "comment" },
+        { text: this.$t("global.tables.type"), value: "type" },
+        {
+          text: this.$t("global.tables.order_number"),
+          value: "order_number",
+        },
+        { text: this.$t("global.tables.balance_simple"), value: "balance" },
+        { text: this.$t("global.tables.curd_number"), value: "card_number" },
+        { text: this.$t("global.tables.end_date"), value: "card_end" },
+        { text: this.$t("global.tables.cvv"), value: "card_cvv" },
+        { text: this.$t("global.tables.comment"), value: "comment" },
 
         {
-          text: "Действия",
+          text: this.$t("global.tables.actions"),
           value: "actions",
           filterable: false,
           align: "center",
