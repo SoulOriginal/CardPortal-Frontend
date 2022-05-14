@@ -433,15 +433,14 @@
           hide-details
         ></v-text-field>
       </v-card-title>
-
+      <!--         item-key="_id"
+        sort-by="name"
+        group-by="info_card._id"
+        show-group-by -->
       <v-data-table
         :headers="headers"
         :items="gds"
         :search="search"
-        item-key="_id"
-        sort-by="name"
-        group-by="info_card._id"
-        show-group-by
         multi-sort
         :sort-desc="[false, true]"
       >
@@ -731,6 +730,10 @@ export default {
       await this.$axios.post("/profile/admin/gds/txt", {
         data_txt: this.parse_res,
       });
+      this.$vueOnToast.pop(
+        "success",
+        `Добавленно ${this.parse_res.length} карт`
+      );
       await this.fetchGds();
       this.data_txt = [];
       this.config_id = null;

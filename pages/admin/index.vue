@@ -14,12 +14,28 @@
             "
           >
             <v-row no-gutters>
-              <v-col cols="6">
+              <v-col cols="12" md="12">
                 <ValidationProvider v-slot="{ errors }" rules="required">
                   <v-text-field
-                    v-model="form.availability"
-                    hide-details
-                    label="В наличии"
+                    v-model="form.name"
+                    type="text"
+                    label="Название товара"
+                  ></v-text-field>
+                  <v-card
+                    v-if="errors[0]"
+                    elevation="3"
+                    class="pa-2 red--text body-1 mb-1 mt-2"
+                  >
+                    <v-icon color="red">mdi-alert-circle-outline</v-icon>
+                    {{ $t(`validate.${errors[0]}`) }}
+                  </v-card>
+                </ValidationProvider>
+              </v-col>
+              <v-col cols="12" md="12">
+                <ValidationProvider v-slot="{ errors }" rules="required">
+                  <v-text-field
+                    v-model="form.balance"
+                    label="Баланс карт в категории"
                     type="number"
                   ></v-text-field>
                   <v-card
@@ -32,7 +48,7 @@
                   </v-card>
                 </ValidationProvider>
               </v-col>
-              <v-col cols="6">
+              <v-col cols="12" md="6">
                 <ValidationProvider v-slot="{ errors }" rules="required">
                   <v-select
                     :items="items_currencies"
@@ -51,65 +67,43 @@
                   </v-card>
                 </ValidationProvider>
               </v-col>
+              <v-col cols="12" md="6">
+                <ValidationProvider v-slot="{ errors }" rules="required">
+                  <v-text-field
+                    v-model="form.price"
+                    label="Цена карты"
+                    type="number"
+                  ></v-text-field>
+                  <v-card
+                    v-if="errors[0]"
+                    elevation="3"
+                    class="pa-2 red--text body-1 mb-1 mt-2"
+                  >
+                    <v-icon color="red">mdi-alert-circle-outline</v-icon>
+                    {{ $t(`validate.${errors[0]}`) }}
+                  </v-card>
+                </ValidationProvider>
+              </v-col>
+              <v-col cols="12">
+                <v-select
+                  :items="items_currencies"
+                  v-model="form.сurrency_sale"
+                  item-text="name"
+                  item-value="name"
+                  label="Валюта продажи"
+                ></v-select>
+              </v-col>
             </v-row>
-            <ValidationProvider v-slot="{ errors }" rules="required">
-              <v-text-field
-                v-model="form.name"
-                type="text"
-                label="Название товара"
-              ></v-text-field>
-              <v-card
-                v-if="errors[0]"
-                elevation="3"
-                class="pa-2 red--text body-1 mb-1 mt-2"
-              >
-                <v-icon color="red">mdi-alert-circle-outline</v-icon>
-                {{ $t(`validate.${errors[0]}`) }}
-              </v-card>
-            </ValidationProvider>
-            <ValidationProvider v-slot="{ errors }" rules="required">
-              <v-text-field
-                v-model="form.price"
-                label="Цена карты"
-                type="number"
-              ></v-text-field>
-              <v-card
-                v-if="errors[0]"
-                elevation="3"
-                class="pa-2 red--text body-1 mb-1 mt-2"
-              >
-                <v-icon color="red">mdi-alert-circle-outline</v-icon>
-                {{ $t(`validate.${errors[0]}`) }}
-              </v-card>
-            </ValidationProvider>
-            <ValidationProvider v-slot="{ errors }" rules="required">
-              <v-text-field
-                v-model="form.balance"
-                label="Баланс карт в категории"
-                type="number"
-              ></v-text-field>
-              <v-card
-                v-if="errors[0]"
-                elevation="3"
-                class="pa-2 red--text body-1 mb-1 mt-2"
-              >
-                <v-icon color="red">mdi-alert-circle-outline</v-icon>
-                {{ $t(`validate.${errors[0]}`) }}
-              </v-card>
-            </ValidationProvider>
-            <v-select
-              :items="items_currencies"
-              v-model="form.сurrency_sale"
-              item-text="name"
-              item-value="name"
-              label="Валюта продажи"
-            ></v-select>
             <v-file-input
               show-size
+              outlined
+              type="file"
+              accept="image/x-png,image/gif,image/jpeg"
               v-model="img_file"
               @change="uploadImage"
             ></v-file-input>
             <v-img
+              v-if="img_file && imgPrew"
               max-height="200"
               class="img_prew"
               :lazy-src="imgPrew"
@@ -205,7 +199,7 @@ export default {
         сurrency_sale: "USD",
       },
       allConfigs: [],
-      img_file: [],
+      img_file: null,
       imgPrew: null,
       items: [
         {
@@ -246,6 +240,10 @@ export default {
           name: "ZL",
           id: 4,
         },
+        {
+          name: "USDT",
+          id: 6,
+        },
       ],
       // "MasterCard", "Visa", "American Express", "UnionPay", "JCB"
       search: "",
@@ -257,11 +255,11 @@ export default {
           filterable: true,
           value: "name",
         },
-        { text: "Цена продажи", value: "price" },
-        { text: "Количество", value: "availability" },
-        { text: "Валюта на карте", value: "currency_card" },
-        { text: "Валюта продажи", value: "сurrency_sale" },
         { text: "Баланс карт", value: "balance" },
+        { text: "Валюта на карте", value: "currency_card" },
+        { text: "Цена продажи", value: "price" },
+        { text: "Валюта продажи", value: "сurrency_sale" },
+        { text: "Количество", value: "availability" },
         {
           text: "Действия",
           value: "actions",
@@ -301,6 +299,7 @@ export default {
       fetchCategories: "admin/fetchCategories",
     }),
     uploadImage() {
+      if (!this.img_file) return;
       this.imgPrew = URL.createObjectURL(this.img_file);
     },
     editById(someId) {
@@ -309,6 +308,8 @@ export default {
     },
     closeDialog() {
       this.dialog = false;
+      this.imgPrew = null;
+      this.img_file = null;
       this.form = this.cleanObj(this.form);
     },
     async getConfigs() {
@@ -327,8 +328,27 @@ export default {
       });
       this.getConfigs();
     },
+    async uploadImgCategory(id) {
+      let formFile = new FormData();
+      formFile.append(
+        "file",
+        this.img_file,
+        Math.floor(Math.random() * 9999999999)
+      );
+      const { data } = await this.$axios.post(
+        `/profile/admin/image?id=${id}`,
+        formFile
+      );
+    },
     async ModisyOrCreateRecordOnConfig(method) {
-      await this.$axios[method]("/profile/admin/conf", this.form);
+      const { data } = await this.$axios[method](
+        "/profile/admin/conf",
+        this.form
+      );
+      console.log(this.img_file);
+      if (this.img_file && data.order._id) {
+        await this.uploadImgCategory(data.order._id);
+      }
       this.closeDialog();
       this.getConfigs();
     },

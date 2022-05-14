@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema(
     role: { type: String },
     balance: { type: Number, default: 0 },
     balance_сurrency: { type: String, default: "USD" },
+    telegram: { type: String, default: "" },
     create_date: { type: Date, default: Date.now },
   },
   {

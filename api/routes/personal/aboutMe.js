@@ -2,7 +2,6 @@ import { currentUser } from "../../common/middlewares/current-user";
 import { validateRequest } from "../../common/middlewares/validate-request";
 const express = require("express");
 const User = require("../../../models/userSchema");
-
 const router = express.Router();
 
 router.get("/user/me", currentUser, validateRequest, async (req, res) => {

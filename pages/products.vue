@@ -101,11 +101,11 @@
       >
         <v-img
           class="product--img"
-          max-height="150"
+          max-height="90"
           max-width="140"
           contain
-          src="https://static.qiwi.com/img/qiwi_com/cards/virtual/list.png"
-          lazy-src="https://static.qiwi.com/img/qiwi_com/cards/virtual/list.png"
+          :src="product.imgURL"
+          :lazy-src="product.imgURL"
         ></v-img>
         <div class="ml-6 product__body">
           <div class="product__body--text">
@@ -324,6 +324,9 @@ export default {
   &__actions {
     display: flex;
     align-items: center;
+  }
+  &--img {
+    border-radius: 10px;
   }
 }
 </style>

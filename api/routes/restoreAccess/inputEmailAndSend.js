@@ -45,7 +45,7 @@ router.post(
           var mailOptions = {
             from: "booster.fun.control@gmail.com",
             to: email,
-            subject: "Restore access your accaunt CardPortal",
+            subject: "Restore access your account CardPortal",
             text: `Follow this link to restore your password ${blink}password/reset/auth?email=${email}&token=${SecretCode}`,
             html: `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
             <html

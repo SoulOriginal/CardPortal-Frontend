@@ -88,8 +88,12 @@ export default {
       selected: [],
       headers: [
         {
-          text: this.$t("global.tables.card_name"),
+          text: this.$t("global.tables.order_number"),
           align: "start",
+          value: "order_number",
+        },
+        {
+          text: this.$t("global.tables.card_name"),
           filterable: true,
           value: "name",
         },

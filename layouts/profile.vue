@@ -160,8 +160,8 @@
     <v-dialog class="lalala" v-model="dialog" width="230">
       <v-card>
         <v-btn block @click.prevent="logout">{{ $t("logout") }}</v-btn>
-
         <v-divider></v-divider>
+        <v-btn block :to="{ name: 'settings' }">{{ $t("settings") }}</v-btn>
       </v-card>
     </v-dialog>
   </v-app>

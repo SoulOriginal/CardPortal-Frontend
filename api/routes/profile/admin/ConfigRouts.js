@@ -32,7 +32,7 @@ router.post(
       res.status(401).json({ payload: "Error save Config" });
       return;
     }
-    res.json({ payload: "ok" });
+    res.json({ payload: "ok", order });
   }
 );
 router.put(
@@ -65,7 +65,7 @@ router.put(
         },
       }
     );
-    res.json({ payload: "ok" });
+    res.json({ payload: "ok", order: { _id } });
   }
 );
 router.put(
@@ -207,4 +207,59 @@ router.get(
     }
   }
 );
+
+const imgur = require("imgur");
+
+const formidable = require("formidable");
+router.post("/profile/admin/image", currentUser, async (req, res) => {
+  const { id } = req.query;
+  try {
+    if (!req.currentUser) {
+      return res.json({ payload: "User not faund" });
+    }
+    const { email, role } = req.currentUser;
+    if (email == undefined) {
+      return res.json({ payload: "User not faund" });
+    }
+    if (role !== "admin") {
+      return res.json({ payload: "User not faund" });
+    }
+    if (!id) {
+      return res.json({ payload: "id err" });
+    }
+    const ids = new ObjectId(id);
+    console.log(ids);
+    new formidable.IncomingForm()
+      .parse(req)
+      .on("field", (name, field) => {
+        console.log(2);
+        return res.json({ payload: "Field", name, field });
+      })
+      .on("file", (name, file) => {
+        console.log(1);
+        imgur
+          .uploadFile(file.path)
+          .then(async (json) => {
+            const SetImage = await configSchema.findOneAndUpdate(
+              { _id: ids },
+              { $set: { imgURL: json.link } },
+              { useFindAndModify: false, new: true }
+            );
+            return res.json({ link: json.link });
+          })
+          .catch((err) => {
+            return res.json({ payload: err.message });
+          });
+      })
+      .on("aborted", () => {
+        return res.json({ payload: "Request aborted by the user" });
+      })
+      .on("error", (err) => {
+        return res.json({ payload: err });
+      });
+  } catch (error) {
+    res.json({ payload: error });
+  }
+});
+
 export { router as ConfigRouts };

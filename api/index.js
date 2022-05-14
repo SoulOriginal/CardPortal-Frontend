@@ -19,7 +19,7 @@ import { EmailShareInt } from "./routes/restoreAccess/EmailShareInt";
 
 import { aboutMeRouter } from "./routes/personal/aboutMe";
 import { updateMePassword } from "./routes/personal/updateMePassword";
-
+import { updateMe } from "./routes/personal/updateMe";
 import { BuyRouts } from "./routes/profile/user/BuyRouts";
 import { ordersRouts } from "./routes/profile/user/ordersRouts";
 
@@ -245,6 +245,7 @@ app.use(signupRouter);
 app.use(sighInRouter);
 app.use(signoutRouter);
 
+app.use(updateMe);
 app.use(inputEmailAndSendRouter);
 app.use(changePasswordByEmailRouter);
 // app.use(changePasswordRouter)

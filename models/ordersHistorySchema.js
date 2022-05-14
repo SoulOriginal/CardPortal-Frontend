@@ -11,6 +11,7 @@ const OrdersHistorySchema = new mongoose.Schema(
     cnf_id: { type: String, required: true },
     cards_buy_ids: { type: Array, default: [], required: true },
     create_date: { type: Date, default: Date.now },
+    order_number: { type: Number },
   },
   {
     versionKey: false,

@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="col-lg-8 m-auto reset">
-      <card v-if="auth" :title="$t('reset_password')" id="home-app-bar">
+      <v-card v-if="auth" :title="$t('reset_password')" id="home-app-bar">
         <ValidationObserver v-slot="{ handleSubmit }">
           <form @submit.prevent="handleSubmit(reset)">
             <!-- Password -->
@@ -55,7 +55,7 @@
             </div>
           </form>
         </ValidationObserver>
-      </card>
+      </v-card>
       <card :title="$t('error_alert_title')" id="home-app-bar" v-else></card>
     </div>
   </div>

@@ -11,6 +11,7 @@ const configSchema = new mongoose.Schema(
     сurrency_sale: { type: String },
     active: { type: Boolean, default: true },
     create_date: { type: Date, default: Date.now },
+    imgURL: { type: String, default: "https://i.imgur.com/2UfCEHF.png" },
   },
   {
     versionKey: false,

@@ -111,8 +111,8 @@ export default {
         { name: "Очистить", value: null },
       ],
       verified: [
-        { name: "Верефицирован", value: true },
-        { name: "Не верефицирован", value: false },
+        { name: "Верифицирован", value: true },
+        { name: "Не верифицирован", value: false },
         { name: "Очистить", value: null },
       ],
       status: [
@@ -131,7 +131,7 @@ export default {
           sortable: false,
           value: "email",
         },
-        { text: "Верефецирован", value: "verified" },
+        { text: "Верифицирован", value: "verified" },
         { text: "Баланс", value: "balance" },
         { text: "Дата создания", value: "create_date" },
         { text: "Действия", value: "actions", sortable: false },

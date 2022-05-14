@@ -2,34 +2,32 @@
   <div class="row">
     <div class="col-lg-8 m-auto email">
       <v-card class="pa-3" min-width="350">
-        <form @submit.prevent="send" @keydown="form.onKeydown($event)">
-          <div class="card-header">{{ $t("reset_password") }}</div>
-          <v-text-field
-            width="500"
-            min-width="500"
-            v-model="form.email"
-            :label="$t('email')"
-            prepend-icon="mdi-email"
-            type="email"
-            required
-          />
-          <!-- Submit Button -->
-          <v-row
-            no-gutters
-            justify-content="center"
-            align="center"
-            justify="center"
-            align-content="center"
+        <div class="card-header">{{ $t("reset_password") }}</div>
+        <v-text-field
+          width="500"
+          min-width="500"
+          v-model="form.email"
+          :label="$t('email')"
+          prepend-icon="mdi-email"
+          type="email"
+          required
+        />
+        <!-- Submit Button -->
+        <v-row
+          no-gutters
+          justify-content="center"
+          align="center"
+          justify="center"
+          align-content="center"
+        >
+          <v-btn
+            type="sumbit"
+            color="red"
+            :disabled="!form.email"
+            @click="send"
+            >{{ $t("send_password_reset_link") }}</v-btn
           >
-            <v-btn
-              type="sumbit"
-              color="red"
-              :disabled="!form.email"
-              @click="send"
-              >{{ $t("send_password_reset_link") }}</v-btn
-            >
-          </v-row>
-        </form>
+        </v-row>
       </v-card>
     </div>
   </div>
@@ -70,6 +68,7 @@ export default {
         .catch(function (error) {
           console.log(error);
         });
+      this.form.email = null;
       if (DataEmail.data.ok == "ok") {
         this.$store.dispatch("auth/saveEmail", this.form.email);
         this.form.reset();

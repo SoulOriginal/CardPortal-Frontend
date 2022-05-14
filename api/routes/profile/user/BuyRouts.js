@@ -60,9 +60,16 @@ router.post(
       ObjectIds.push(new ObjectId(gdsIdsItem.ids));
     }
     const NewDateNow = Date.now();
+    const orderNumberRandom = Math.floor(Math.random() * 9999999999);
     const SetCardsByUserId = await GdsSchema.updateMany(
       { _id: { $in: ObjectIds } },
-      { $set: { user_id: existingUser._id, opened_date: NewDateNow } },
+      {
+        $set: {
+          user_id: existingUser._id,
+          opened_date: NewDateNow,
+          order_number: orderNumberRandom,
+        },
+      },
       { multi: true }
     );
     console.log(ConfigFind);
@@ -73,6 +80,7 @@ router.post(
       cnf_id: item_id,
       сurrency_buy: buy_сurrency,
       card_balance: ConfigFind[0].balance,
+      order_number: orderNumberRandom,
       currency_card,
       cards_buy_ids: ObjectIds,
     });

@@ -33,8 +33,8 @@ const routes = [
   { path: "/user", name: "user", component: page("products.vue") },
   { path: "/user/orders", name: "orders", component: page("orders.vue") },
   {
-    path: "/user/settings/password",
-    name: "settings.password",
+    path: "/settings",
+    name: "settings",
     component: page("settings/password.vue"),
   },
   {
