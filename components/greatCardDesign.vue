@@ -48,7 +48,11 @@
                 class="card-item__number"
                 ref="cardNumber"
               >
-                <template v-if="getCardType === 'amex'">
+                <span>
+                  <div>{{ cardNumber }}</div>
+                </span>
+
+                <!-- <template v-if="getCardType === 'amex'">
                   <span v-for="(n, $index) in amexCardMask" :key="$index">
                     <transition name="slide-fade-up">
                       <div
@@ -114,7 +118,7 @@
                       </div>
                     </transition>
                   </span>
-                </template>
+                </template> -->
               </label>
               <div class="card-item__content">
                 <label for="cardName" class="card-item__info" ref="cardName">
@@ -174,7 +178,8 @@
             <div class="card-item__cvv">
               <div class="card-item__cvvTitle">CVV</div>
               <div class="card-item__cvvBand">
-                <span v-for="(n, $index) in cardCvv" :key="$index"> * </span>
+                <!-- <span v-for="(n, $index) in cardCvv" :key="$index"> * </span> -->
+                <span>{{ cardCvv }}</span>
               </div>
               <div class="card-item__type">
                 <img

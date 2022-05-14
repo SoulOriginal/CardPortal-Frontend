@@ -35,17 +35,17 @@
             {{ $t("global.tables.price") }}: {{ selectedItem.price }}
             {{ selectedItem.сurrency_sale }}</v-col
           >
-          <v-col cols="12">
+          <v-col cols="12" class="mt-2">
             {{ $t("global.order_orice") }}: {{ calculatedPrice }}
             {{ selectedItem.сurrency_sale }}</v-col
           >
-          <v-col cols="12">
+          <v-col cols="12" class="mt-2">
             {{ $t("global.balance_aliviable") }}:
             <v-chip outlined color="orange"
               >{{ balance }} {{ balance_сurrency }}</v-chip
             ></v-col
           >
-          <v-col cols="12">
+          <v-col cols="12" class="mt-2">
             {{ $t("global.balance_after_buy") }}:
             <v-chip outlined color="blue"
               >{{ calculatedPriceAfterBuy }} {{ balance_сurrency }}</v-chip
@@ -123,7 +123,9 @@
               >
               <v-chip close-icon="mdi-delete" color="blue" outlined
                 >{{ $t("global.balance") }}:
-                <strong class="ml-1">{{ product.balance }}</strong>
+                <strong class="ml-1"
+                  >{{ product.balance }} {{ product.currency_card }}</strong
+                >
               </v-chip>
               <v-chip close-icon="mdi-delete" color="blue" outlined
                 >{{ $t("global.availability") }}: {{ product.availability }}
@@ -137,7 +139,7 @@
               color="#FF8C00"
               @click="openModalBuy(product._id)"
               :disabled="product.availability === 0"
-              >{{ $t("global.buy_for") }}{{ product.price }}
+              >{{ $t("global.buy_for") }} {{ product.price }}
               {{ product.сurrency_sale }}</v-btn
             >
           </div>
@@ -213,18 +215,28 @@ export default {
       featchCategories: "categories/featchCategories",
       setDubleTable: "categories/setDubleTable",
     }),
+    isInteger(num) {
+      return (num ^ 0) === num;
+    },
     async hendlerBuy() {
+      if (!this.isInteger(parseFloat(this.cardsLengt))) {
+        return this.$vueOnToast.pop(
+          "error",
+          this.$t("global.paymant.length_float")
+        );
+      }
       this.cardsLengt = parseInt(this.cardsLengt);
       if (this.calculatedPrice > this.balance) {
         return this.$vueOnToast.pop(
           "error",
-          "На вашем балансе не хватает средств, пополните баланс"
+          this.$t("global.paymant.user_balance")
         );
       }
+
       if (this.cardsLengt > this.selectedItem.availability) {
         return this.$vueOnToast.pop(
           "error",
-          "Вы выбрали для заказа больше чем доступно"
+          this.$t("global.paymant.order_length")
         );
       }
 
@@ -239,7 +251,7 @@ export default {
       });
       const { status } = data;
       if (status == 200) {
-        await this.$vueOnToast.pop("done", "Оплата успешно прошла");
+        await this.$vueOnToast.pop("done", this.$t("global.paymant.pay_ok"));
         await this.$store.dispatch("auth/fetchUser");
         await this.featchCategories();
         this.closeDialog();
@@ -249,23 +261,17 @@ export default {
       if (status == 99) {
         return this.$vueOnToast.pop(
           "error",
-          "На вашем балансе не хватает средств, пополните баланс"
+          this.$t("global.paymant.user_balance")
         );
       }
       if (status == 991) {
-        return this.$vueOnToast.pop("done", "Ошибка Категории");
+        return this.$vueOnToast.pop("done", this.$t("global.paymant.category"));
       }
       if (status == 992) {
-        return this.$vueOnToast.pop(
-          "error",
-          "Измените количество и попробуйте снова"
-        );
+        return this.$vueOnToast.pop("error", this.$t("global.paymant.length"));
       }
       if (status == 993) {
-        return this.$vueOnToast.pop(
-          "error",
-          "Измените количество и попробуйте снова"
-        );
+        return this.$vueOnToast.pop("error", this.$t("global.paymant.length"));
       }
     },
     openModalBuy(id) {
