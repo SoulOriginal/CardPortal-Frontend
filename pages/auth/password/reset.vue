@@ -1,7 +1,12 @@
 <template>
   <div class="row">
     <div class="col-lg-8 m-auto reset">
-      <v-card v-if="auth" :title="$t('reset_password')" id="home-app-bar">
+      <v-card
+        v-if="auth"
+        :title="$t('reset_password')"
+        id="home-app-bar"
+        class="pa-4"
+      >
         <ValidationObserver v-slot="{ handleSubmit }">
           <form @submit.prevent="handleSubmit(reset)">
             <!-- Password -->
@@ -45,17 +50,14 @@
             </ValidationProvider>
             <!-- Submit Button -->
             <div>
-              <button
-                type="submit"
-                color="primary"
-                class="mr-2 v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default primary"
-              >
+              <v-btn type="submit" color="primary" block>
                 {{ $t("reset_password") }}
-              </button>
+              </v-btn>
             </div>
           </form>
         </ValidationObserver>
       </v-card>
+      <v-card v-else class="pa-4">error </v-card>
       <card :title="$t('error_alert_title')" id="home-app-bar" v-else></card>
     </div>
   </div>
@@ -63,9 +65,8 @@
 
 <script>
 import { ValidationObserver, ValidationProvider } from "vee-validate";
-import Card from "../../../components/base/Card.vue";
 export default {
-  layout: "home",
+  layout: "auth",
   head() {
     return { title: this.$t("reset_password") };
   },
@@ -76,7 +77,7 @@ export default {
   },
 
   data: () => ({
-    auth: false,
+    auth: true,
     form: {
       newPassword: "",
       repeatNewPassword: "",
@@ -84,8 +85,9 @@ export default {
     },
   }),
 
-  async created() {
+  async mounted() {
     if (!this.$route.query.email) return;
+    console.log(this.$route.query);
     this.form.email = this.$route.query.email;
     var DataChek = await this.$axios.post(`/user/chek/email`, {
       email: this.$route.query.email,

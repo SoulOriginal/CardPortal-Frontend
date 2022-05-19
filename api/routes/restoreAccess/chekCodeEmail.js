@@ -26,17 +26,19 @@ router.post(
     try {
       const { remember_token, email, type } = req.body;
       const existingUser = await User.findOne({ email });
-      if (remember_token === existingUser.remember_token) {
+      console.log("remember_token", remember_token);
+      console.log("existingUser", existingUser.remember_token);
+      if (remember_token == existingUser.remember_token) {
         if (type == "verified") {
           await User.updateOne({ email }, { verified: true });
           await User.updateOne({ email }, { remember_token: null });
-          res.json({ payload: "ok" });
+          return res.json({ payload: "ok" });
         } else if (type == "restore") {
           await User.updateOne({ email }, { remember_token: null });
-          res.json({ payload: "ok" });
+          return res.json({ payload: "ok" });
         }
       } else {
-        res.json({ payload: "Neok" });
+        return res.json({ payload: "Neok" });
       }
 
       // if (existingUser.status === 'USER' || existingUser.status === 'ADMIN' || existingUser.status === 'SUPERADMIN') {

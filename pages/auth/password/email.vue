@@ -37,7 +37,7 @@
 import Form from "vform";
 
 export default {
-  layout: "home",
+  layout: "auth",
   head() {
     return { title: this.$t("reset_password") };
   },

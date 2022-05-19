@@ -1,117 +1,98 @@
 <template>
-  <div>
+  <v-container class="relative pa-0" fluid fill-height>
     <v-row no-gutters justify="center">
-      <v-col cols="12" sm="8" md="6" lg="4">
-        <v-card
-          :class="$vuetify.breakpoint.name == `sm` ? `pa-2` : `pa-0`"
-          height="100%"
-          elevation="0"
-        >
-          <v-list-item-content class="pa-5">
-            <v-row no-gutters>
-              <v-btn @click="$router.go(-1)" large icon color="red">
-                <v-icon>mdi-arrow-left</v-icon>
-              </v-btn>
-              <div class="d-flex justify-center mb-4" style="width: 100%">
-                <v-img
-                  lazy-src="../dark2.png"
-                  max-height="33"
-                  max-width="250"
-                  contain
-                  src="../dark2.png"
+      <v-card
+        :class="$vuetify.breakpoint.name == `sm` ? `pa-2` : `pa-0`"
+        height="100%"
+        elevation="0"
+      >
+        <ValidationObserver v-slot="{ handleSubmit }">
+          <form
+            id="login-form"
+            @submit.prevent="handleSubmit(login_auth)"
+            style="min-width: 375px"
+          >
+            <v-card-text>
+              <ValidationProvider v-slot="{ errors }" rules="required|email">
+                <v-text-field
+                  v-model="login.email"
+                  :label="$t('email')"
+                  name="login"
+                  persistent-placeholder
+                  placeholder=" "
+                  clearable
+                  class="mt-3 mb-3"
+                  type="email"
+                  hide-details
+                  required
+                />
+
+                <v-card
+                  v-if="errors[0]"
+                  elevation="3"
+                  class="pa-2 red--text body-1 mb-1 mt-2"
                 >
-                </v-img>
-              </div>
-            </v-row>
+                  <v-icon color="red">mdi-alert-circle-outline</v-icon>
+                  {{ $t(`validate.${errors[0]}`) }}
+                </v-card>
+              </ValidationProvider>
+              <ValidationProvider
+                v-slot="{ errors }"
+                rules="required|max:8|min:30"
+              >
+                <v-text-field
+                  v-model="login.password"
+                  :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
+                  :type="show ? 'text' : 'password'"
+                  name="password"
+                  hide-details
+                  class="mt-3 mb-3"
+                  persistent-placeholder
+                  placeholder=" "
+                  :label="$t('password')"
+                  @click:append="show = !show"
+                ></v-text-field>
 
-            <h3 class="text-center mt-3">
-              {{ $t(`login`) }}
-            </h3>
-          </v-list-item-content>
-
-          <ValidationObserver v-slot="{ handleSubmit }">
-            <form id="login-form" @submit.prevent="handleSubmit(login_auth)">
-              <v-card-text>
-                <ValidationProvider v-slot="{ errors }" rules="required|email">
-                  <v-text-field
-                    v-model="login.email"
-                    :label="$t('email')"
-                    name="login"
-                    persistent-placeholder
-                    placeholder=" "
-                    clearable
-                    class="mt-3 mb-3"
-                    type="email"
-                    hide-details
-                    required
-                  />
-
-                  <v-card
-                    v-if="errors[0]"
-                    elevation="3"
-                    class="pa-2 red--text body-1 mb-1 mt-2"
-                  >
-                    <v-icon color="red">mdi-alert-circle-outline</v-icon>
-                    {{ $t(`validate.${errors[0]}`) }}
-                  </v-card>
-                </ValidationProvider>
-                <ValidationProvider
-                  v-slot="{ errors }"
-                  rules="required|max:8|min:30"
+                <v-card
+                  v-if="errors[0]"
+                  elevation="3"
+                  class="pa-2 red--text body-1 mb-1 mt-2"
                 >
-                  <v-text-field
-                    v-model="login.password"
-                    :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
-                    :type="show ? 'text' : 'password'"
-                    name="password"
-                    hide-details
-                    class="mt-3 mb-3"
-                    persistent-placeholder
-                    placeholder=" "
-                    :label="$t('password')"
-                    @click:append="show = !show"
-                  ></v-text-field>
+                  <v-icon color="red">mdi-alert-circle-outline</v-icon>
+                  {{ $t(`validate.${errors[0]}`) }}
+                </v-card>
+              </ValidationProvider>
 
-                  <v-card
-                    v-if="errors[0]"
-                    elevation="3"
-                    class="pa-2 red--text body-1 mb-1 mt-2"
-                  >
-                    <v-icon color="red">mdi-alert-circle-outline</v-icon>
-                    {{ $t(`validate.${errors[0]}`) }}
-                  </v-card>
-                </ValidationProvider>
-
-                <v-btn
-                  text
-                  small
-                  color="blue"
-                  :to="{ name: 'password.request' }"
-                  class="text-decoration-underline text-capitalize font-weight-regular float-right"
-                  >{{ $t("forgot_password") }}</v-btn
-                >
-                <v-btn
-                  class="text-capitalize font-weight-regular mt-15"
-                  color="red lighten-2 white--text"
-                  block
-                  type="submit"
-                  >{{ $t("login") }}</v-btn
-                >
-              </v-card-text>
-            </form>
-          </ValidationObserver>
-        </v-card>
-      </v-col>
+              <v-btn
+                text
+                small
+                color="blue"
+                :to="{ name: 'password.request' }"
+                class="text-decoration-underline text-capitalize font-weight-regular float-right"
+                >{{ $t("forgot_password") }}</v-btn
+              >
+              <v-btn
+                class="text-capitalize font-weight-regular mt-15"
+                color="red lighten-2 white--text"
+                block
+                type="submit"
+                >{{ $t("login") }}</v-btn
+              >
+            </v-card-text>
+          </form>
+        </ValidationObserver>
+      </v-card>
     </v-row>
+
     <preload :end="loading" :opacity="0.9" />
-  </div>
+  </v-container>
 </template>
 
 <script>
 import preload from "@/components/LoadingBar";
 import { ValidationObserver, ValidationProvider } from "vee-validate";
 export default {
-  layout: "default",
+  layout: "auth",
   components: {
     ValidationObserver,
     ValidationProvider,
@@ -138,6 +119,9 @@ export default {
         this.loading = true;
         const response = await this.$axios.post("/user/signin", this.login);
         data = response.data;
+        if (!data) {
+          return (this.loading = false);
+        }
         if (!data.userJwt) {
           if (data.error) {
             if (data.error.errorCode == 1) {
@@ -178,11 +162,11 @@ export default {
           }
         }
       } catch (e) {
-        let error = e.response.data.message;
-        if (!error) {
-          error = e.response.data.error;
-        }
-        this.$vueOnToast.pop("error", error);
+        // let error = e.response.data.message;
+        // if (!error) {
+        //   error = e.response;
+        // }
+        this.$vueOnToast.pop("error", e);
         this.loading = false;
         return;
       }
@@ -224,5 +208,8 @@ html {
   bottom: 0;
   left: 0;
   right: 0;
+}
+.relative {
+  position: relative !important;
 }
 </style>

@@ -10,7 +10,7 @@ const page = (path) => () => {
 
 const routes = [
   { path: "/", name: "home", component: page("index.vue") },
-  { path: "/test", name: "testt", component: page("test.vue") },
+  { path: "/test", name: "testtf", component: page("test.vue") },
   // },
   { path: "/login", name: "login", component: page("auth/login.vue") },
   { path: "/register", name: "auth.user", component: page("auth/user.vue") },
@@ -48,7 +48,7 @@ const routes = [
     component: page("auth/password/email.vue"),
   },
   {
-    path: "/password/reset/:token",
+    path: "/password/reset/auth",
     name: "password.reset",
     component: page("auth/password/reset.vue"),
   },

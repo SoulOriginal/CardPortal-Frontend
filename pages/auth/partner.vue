@@ -277,7 +277,6 @@ import preload from "@/components/LoadingBar";
 import { ValidationObserver, ValidationProvider } from "vee-validate";
 import Places from "vue-places";
 export default {
-  layout: "default",
   components: {
     ValidationObserver,
     ValidationProvider,
@@ -287,6 +286,7 @@ export default {
   head() {
     return { title: this.$t("login") };
   },
+  layout: "auth",
   data() {
     return {
       register: {

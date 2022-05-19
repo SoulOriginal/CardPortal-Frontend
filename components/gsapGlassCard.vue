@@ -61,7 +61,7 @@
       <g class="main" id="main">
         <circle class="ball bg" fill="url(#grad2)" cx="120" cy="130" r="130" />
         <circle class="ball bg" fill="url(#grad3)" cx="550" cy="410" r="210" />
-        <g class="blur" mask="url(#m)">
+        <!-- <g class="blur" mask="url(#m)">
           <image
             class="bg"
             x="33"
@@ -70,7 +70,7 @@
             height="600"
             xlink:href="https://assets.codepen.io/721952/bgBlur.jpg"
           />
-        </g>
+        </g> -->
         <g class="card">
           <rect
             fill="none"
@@ -170,7 +170,6 @@ export default {
         0.2
       );
     window.onresize = this.centerMain();
-    this.centerMain();
     window.onmousemove = (e) => {
       let winPercent = {
           x: e.clientX / window.innerWidth,
@@ -181,7 +180,7 @@ export default {
           Math.abs(
             ((e.clientX - window.innerWidth / 2) / window.innerWidth) * 2
           );
-      let time2 = timeline({ defaults: { duration: 0.5, overwrite: "auto" } })
+      timeline({ defaults: { duration: 0.5, overwrite: "auto" } })
         .to(".card", { rotation: -7 + 9 * winPercent.x }, 0)
         .to(".fillLight", { opacity: distFromCenter }, 0)
         .to(
@@ -194,7 +193,7 @@ export default {
   methods: {
     centerMain() {
       console.log(
-        this.gsap.set("#main", {
+        this.gsap.to("#main", {
           x: "50%",
           xPercent: -50,
           y: "50%",
