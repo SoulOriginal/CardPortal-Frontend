@@ -36,7 +36,9 @@ export default {
   font-size: 1em;
   font-family: Arial, sans-serif;
   text-shadow: 0 0 5px #000;
-  opacity: 0.7;
+  opacity: 0.3;
+  pointer-events: none;
+  z-index: 0;
 }
 
 @-webkit-keyframes card-p-bacs-fall {
@@ -78,7 +80,6 @@ export default {
 .card-p-bac {
   position: fixed;
   top: -10%;
-  z-index: 9999;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;

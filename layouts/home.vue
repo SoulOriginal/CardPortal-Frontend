@@ -3,8 +3,9 @@
     <toast-container></toast-container>
     <v-main>
       <home-app-bar />
+      <FlyIcons />
       <v-fade-transition mode="out-in">
-        <nuxt />
+        <nuxt style="z-index: 1" />
       </v-fade-transition>
     </v-main>
 
@@ -17,6 +18,7 @@ export default {
   name: "HomeLayout",
   components: {
     HomeAppBar: () => import("~/components/AppBar"),
+    FlyIcons: () => import("~/components/bacground-icons-fly"),
     HomeFooter: () => import("~/components/Footer"),
   },
   async beforeCreate() {

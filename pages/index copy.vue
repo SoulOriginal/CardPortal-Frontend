@@ -1,41 +1,180 @@
 <template>
-  <div class="conttainer">
-    <v-row no-gutters class="first-hero-cont pb-12">
-      <v-col cols="12" md="6">
-        <div class="flex-vertival-center">
-          <div>
-            <div class="hero-text">
-              Виртуальные подарочные карты на все случаи жизни
+  <div>
+    <v-row id="main" no-gutters class="pb-7 pt-7">
+      <v-col cols="12" md="6" class="fcc">
+        <v-card class="rounded-xl pa-3 fcc" width="460" elevation="0">
+          <h1>Цените своё время и деньги</h1>
+          <no-ssr>
+            <h4>
+              <vue-typer
+                :text="[
+                  'Избавьтесь от необходимости тратить тысячи часов напоиск и выпуск карт.',
+                  'Виртуальные карты для вашего бизнеса',
+                ]"
+                :repeat="Infinity"
+                :shuffle="true"
+                initial-action="typing"
+                :pre-type-delay="70"
+                :type-delay="130"
+                :pre-erase-delay="2000"
+                :erase-delay="250"
+                erase-style="select-all"
+                :erase-on-complete="true"
+                caret-animation="expand"
+              ></vue-typer>
+            </h4>
+            <v-btn color="#2c60f5" class="mt-12 white--text" to="register"
+              >Создайте аккаунт</v-btn
+            >
+          </no-ssr>
+        </v-card>
+      </v-col>
+      <v-col cols="12" md="6" align="center" class="mt-4">
+        <v-img
+          v-if="$vuetify.breakpoint.width < 960"
+          width="400"
+          src="1.svg"
+        ></v-img>
+        <div v-else class="gradient-anim">
+          <div class="card">
+            <div class="face front">
+              <h3 class="debit">CardPortal</h3>
+              <h3 class="bank">
+                <no-ssr>
+                  <vue-typer
+                    :text="['VISA', `MASTERCARD`]"
+                    :repeat="Infinity"
+                    initial-action="typing"
+                    :pre-type-delay="70"
+                    :type-delay="130"
+                    :pre-erase-delay="2000"
+                    :erase-delay="250"
+                    erase-style="select-all"
+                    :erase-on-complete="true"
+                    caret-animation="expand"
+                  ></vue-typer>
+                </no-ssr>
+              </h3>
+              <img class="chip" src="chip.png" alt="chip" />
+              <h3 class="number">
+                <vue-typer
+                  :text="[
+                    '1357 7568 3338 9956',
+                    '2256 8558 8458 4545',
+                    '5564 8238 6458 4445',
+                    '8858 8834 2235 2098',
+                    '2202 2020 2210 3400',
+                    '0000 0000 0000 0001',
+                    '2000 0002 0000 0002',
+                  ]"
+                  :repeat="Infinity"
+                  :shuffle="true"
+                  initial-action="typing"
+                  :pre-type-delay="70"
+                  :type-delay="130"
+                  :pre-erase-delay="2000"
+                  :erase-delay="250"
+                  erase-style="select-all"
+                  :erase-on-complete="true"
+                  caret-animation="expand"
+                ></vue-typer>
+              </h3>
+              <h5 class="valid">
+                <span
+                  >VALID <br />
+                  THRU</span
+                ><span>
+                  <no-ssr>
+                    <vue-typer
+                      :text="[
+                        '10/28  ',
+                        '10/11  ',
+                        '10/16  ',
+                        '10/11  ',
+                        '07/30  ',
+                      ]"
+                      :repeat="Infinity"
+                      initial-action="typing"
+                      :pre-type-delay="70"
+                      :type-delay="130"
+                      :pre-erase-delay="2000"
+                      :erase-delay="250"
+                      erase-style="select-all"
+                      :erase-on-complete="true"
+                      caret-animation="expand"
+                    ></vue-typer>
+                  </no-ssr>
+                </span>
+              </h5>
+              <!-- <h5 class="card-holder">jQueryScript</h5> -->
             </div>
-            <v-btn color="#00FFF0" class="pl-12 pr-12 pt-5 pb-5 mt-8">
-              <div class="hero-btn-text">Купить</div>
-            </v-btn>
+            <div class="face back">
+              <div class="blackbar"></div>
+              <div class="cvvtext">
+                <div class="white-bar">
+                  <div class="cvv">???</div>
+                </div>
+              </div>
+              <!-- <p class="text">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
+              quis ex nec nulla posuere sollicitudin. Proin nec orci at est
+              pellentesque malesuada eu a neque. Maecenas quis porttitor odio.
+              Praesent faucibus dui nisl, ac luctus mauris pulvinar in. Morbi
+              vitae ante a nunc ullamcorper rutrum. Donec non interdum purus,
+              gravida elementum mi.
+            </p> -->
+            </div>
           </div>
         </div>
       </v-col>
-      <v-col cols="12" md="6" align="center" justify="center">
-        <v-img
-          src="cardIcons.svg"
-          lazy-src="cardIcons.svg"
-          contain
-          max-width="603"
-          max-height="450"
-        ></v-img>
-      </v-col>
     </v-row>
-    <v-row no-gutters class="first-hero-cont mt-12 mb-12">
+    <v-col cols="11" id="main2" style="margin: 0 auto">
+      <v-row no-gutters>
+        <v-col cols="12" md="6" lg="4" class="mt-3">
+          <v-icon color="#7067D8" size="50">mdi-cash-multiple</v-icon>
+          <h3 class="h3-blue">Более 12 эмитентов карт</h3>
+          <h5 class="mt-2 font-weight-regular text-md-body-1">
+            Избавьтесь от необходимости тратить тысячи часов на поиск и
+            получение карт у десятков резных поставщиков, мы собрали для вас всё
+            необходимое в одном месте.
+          </h5>
+        </v-col>
+        <v-col cols="12" md="6" lg="4" class="mt-3">
+          <v-icon color="#7067D8" size="44"
+            >mdi-credit-card-multiple-outline</v-icon
+          >
+          <h4 class="h3-blue">Разнообразие карт</h4>
+          <h5 class="mt-2 font-weight-regular text-md-body-1">
+            Выпускайте карты различных ГЕО где и когда захотите. Всё для того,
+            чтобы платежи вашей кампании проходили гладко.
+          </h5>
+        </v-col>
+        <v-col cols="12" md="12" lg="4" class="mt-3">
+          <v-icon color="#7067D8" size="44">mdi-timer-sand</v-icon>
+          <h4 class="h3-blue">Цените своё время и деньги</h4>
+          <h5 class="mt-2 font-weight-regular text-md-body-1">
+            Избавьтесь от тысяч часов, потраченных на поиск и выпуск карт.
+          </h5>
+        </v-col>
+      </v-row>
+    </v-col>
+    <v-row id="main3">
       <v-col cols="12" md="6" align="center" justify="center">
-        <v-img
-          src="iphoneCard.svg"
-          lazy-src="iphoneCard.svg"
-          contain
-          max-width="511"
-          max-height="436"
-        ></v-img>
+        <div class="device device-iphone-x">
+          <div class="device-frame">
+            <div class="device-content"></div>
+          </div>
+          <div class="device-stripe"></div>
+          <div class="device-header">
+            <div class="device-sensors"></div>
+          </div>
+          <div class="device-btns"></div>
+          <div class="device-power"></div>
+        </div>
       </v-col>
-      <v-col cols="12" md="6" class="pt-12">
+      <v-col cols="12" md="6">
         <h1 class="mt-9 h3-blue">Что такое виртуальная карта?</h1>
-        <p style="font-size: 20px" class="op-7">
+        <p style="font-size: 20px">
           Виртуальная карта — это цифровая платежная карта, которая
           предоставляет вам онлайн-доступ к 16-значному номеру карты, CVV и
           сроку действия.
@@ -63,12 +202,12 @@
         </v-btn>
       </v-col>
     </v-row>
-    <v-row>
+    <v-row id="main4">
       <v-col cols="12" md="6">
         <h1 class="mt-9 big-text h3-blue">
           Глобальное использование по всему миру!
         </h1>
-        <p style="font-size: 20px" class="op-7">
+        <p style="font-size: 20px">
           Виртуальную подарочную карта Mastercard и VISA, вы можете потратить
           везде, где принимается обычная дебетовая карта Mastercard или VISA.
           <br />
@@ -88,47 +227,45 @@
         </p>
       </v-col>
       <v-col cols="12" md="6" align="center" justify="center">
-        <div class="flex-vertival-center">
-          <v-row align="center" justify="center">
-            <v-col cols="4">
-              <v-card
-                max-width="220"
-                class="pa-5"
-                rounded="md"
-                :style="gradientRad"
-              >
-                <h1 class="trafik-card__description">12 млн</h1>
-                <p class="trafik-card__description">Мазазинов</p>
-              </v-card>
-            </v-col>
-            <v-col cols="4">
-              <v-card
-                max-width="220"
-                class="pa-5"
-                rounded="md"
-                :style="gradientRad"
-              >
-                <v-img
-                  max-height="85px"
-                  contain
-                  lazy-src="https://www.seekpng.com/png/full/272-2720221_visa-master-visa-mastercard-decal-sticker.png"
-                  src="https://www.seekpng.com/png/full/272-2720221_visa-master-visa-mastercard-decal-sticker.png"
-                ></v-img>
-              </v-card>
-            </v-col>
-            <v-col cols="4">
-              <v-card
-                max-width="220"
-                class="pa-5"
-                rounded="md"
-                :style="gradientRad"
-              >
-                <h1 class="trafik-card__description">36 млн</h1>
-                <p class="trafik-card__description">Продавцов</p>
-              </v-card>
-            </v-col>
-          </v-row>
-        </div>
+        <v-row>
+          <v-col cols="4">
+            <v-card
+              max-width="220"
+              class="pa-5"
+              rounded="md"
+              :style="gradientRad"
+            >
+              <h1 class="trafik-card__description">12 млн</h1>
+              <p class="trafik-card__description">Мазазинов</p>
+            </v-card>
+          </v-col>
+          <v-col cols="4">
+            <v-card
+              max-width="220"
+              class="pa-5"
+              rounded="md"
+              :style="gradientRad"
+            >
+              <v-img
+                max-height="85px"
+                contain
+                lazy-src="https://www.seekpng.com/png/full/272-2720221_visa-master-visa-mastercard-decal-sticker.png"
+                src="https://www.seekpng.com/png/full/272-2720221_visa-master-visa-mastercard-decal-sticker.png"
+              ></v-img>
+            </v-card>
+          </v-col>
+          <v-col cols="4">
+            <v-card
+              max-width="220"
+              class="pa-5"
+              rounded="md"
+              :style="gradientRad"
+            >
+              <h1 class="trafik-card__description">36 млн</h1>
+              <p class="trafik-card__description">Продавцов</p>
+            </v-card>
+          </v-col>
+        </v-row>
       </v-col>
     </v-row>
     <v-row align="center" justify="center">
@@ -366,6 +503,53 @@
         </svg>
       </div>
     </v-row>
+    <!-- <div class="container">
+      <div class="row text-center">
+        <div class="col-md-2">1</div>
+        <div class="col-md-2">1</div>
+        <div class="col-md-2">1</div>
+        <div class="col-md-2">1</div>
+        <div class="col-md-2">1</div>
+      </div>
+      <div class="row text-center">
+        <div class="col-md-2">2</div>
+        <div class="col-md-2">2</div>
+        <div class="col-md-2">2</div>
+        <div class="col-md-2">2</div>
+        <div class="col-md-2">2</div>
+      </div>
+    </div> -->
+    <h1 class="big-text text-center">Закупайте трафик где-угодно</h1>
+    <v-container>
+      <v-row no-gutters justify="space-between">
+        <v-col
+          v-for="item in trafik"
+          :key="item.title"
+          cols="12"
+          md="4"
+          class="trafik-card"
+        >
+          <v-card
+            class="pa-3 trafik-card__item"
+            :style="item.gradient"
+            justify="center"
+          >
+            <v-img
+              :src="item.icon"
+              :lazy-src="item.icon"
+              width="130"
+              height="50"
+              contain
+              class="mb-7 mt-5"
+            ></v-img>
+            <span class="trafik-card__title"> {{ item.title }}</span>
+            <div class="mt-4 trafik-card__description">
+              {{ item.description }}
+            </div>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
     <h1 class="mt-9 big-text h3-blue text-center">
       Где можно использовать подарочные карты?
     </h1>
@@ -374,135 +558,36 @@
       class="mt-7"
       style="max-width: 1007px; margin: 0 auto !important"
     >
-      <v-col cols="6" class="pa-2 mt-5 color-purple d-flex">
-        <v-btn
-          class="mr-5"
-          width="50"
-          height="50"
-          color="rgba(255, 255, 255, 0.08"
-        >
-          <v-icon color="white">mdi-cart</v-icon>
-        </v-btn>
-        <div>
-          Делайте покупки онлайн с виртуальными картами. Делайте покупки онлайн
-          в ваших любимых магазинах, таких как Amazon, eBay, AliExpress.
-        </div>
+      <v-col cols="6" class="pa-2 mt-5">
+        Делайте покупки онлайн с виртуальными картами. Делайте покупки онлайн в
+        ваших любимых магазинах, таких как Amazon, eBay, AliExpress.
       </v-col>
-      <v-col cols="6" class="pa-2 mt-5 color-purple d-flex">
-        <v-btn
-          class="mr-5"
-          width="50"
-          height="50"
-          color="rgba(255, 255, 255, 0.08"
-        >
-          <v-icon color="white">mdi-lightbulb-outline</v-icon>
-        </v-btn>
-        Получите доступ к создателям с помощью виртуальной карты. Получите
+      <v-col cols="6" class="pa-2 mt-5"
+        >Получите доступ к создателям с помощью виртуальной карты. Получите
         доступ к блогам, публикациям, трекам или видео от ваших любимых
         создателей контента на YouTube, Roblux, Discord, Patreon, OnlyFans и
         TikTok.
       </v-col>
-      <v-col cols="6" class="pa-2 mt-5 color-purple d-flex">
-        <v-btn
-          class="mr-5"
-          width="50"
-          height="50"
-          color="rgba(255, 255, 255, 0.08"
-        >
-          <v-icon color="white">mdi-monitor-share</v-icon>
-        </v-btn>
+      <v-col cols="6" class="pa-2 mt-5">
         Карты очень полезны для онлайн-подписок, таких как Amazon Prime,
         Netflix, Disney+ или потоковых сервисов Apple Music и Spotify.
       </v-col>
-      <v-col cols="6" class="pa-2 mt-5 color-purple d-flex">
-        <v-btn
-          class="mr-5"
-          width="50"
-          height="50"
-          color="rgba(255, 255, 255, 0.08"
-        >
-          <v-icon color="white">mdi-google-controller</v-icon> </v-btn
+      <v-col cols="6" class="pa-2 mt-5"
         >Онлайн-игры и азартные игры с виртуальной картой. Используйте свою
         карту для онлайн-игр в таких сетях, как PlayStation Plus, Steam, Xbox
         Live, и для киберспорта, например FIFA, Leaque of Legends и Fortnite.
       </v-col>
-      <v-col cols="6" class="pa-2 mt-5 color-purple d-flex">
-        <v-btn
-          class="mr-5"
-          width="50"
-          height="50"
-          color="rgba(255, 255, 255, 0.08"
-        >
-          <v-icon color="white">mdi-rocket-launch</v-icon>
-        </v-btn>
+      <v-col cols="6" class="pa-2 mt-5">
         Залог для краудфандинга с виртуальной картой. Примите участие в
         краудфандинговых проектах для новейших и крутых гаджетов через
         Kickstarter и Indigogo. Или поддержите людей и проекты через GoFundMe.
       </v-col>
-      <v-col cols="6" class="pa-2 mt-5 color-purple d-flex">
-        <v-btn
-          class="mr-5"
-          width="50"
-          height="50"
-          color="rgba(255, 255, 255, 0.08"
-        >
-          <v-icon color="white">mdi-plus-box-multiple</v-icon> </v-btn
+      <v-col cols="6" class="pa-2 mt-5"
         >Получайте популярные приложения с виртуальной картой Покупайте самые
         популярные приложения в Google Play или App Store, используя свою карту.
         Вы также можете приобрести программное обеспечение у таких поставщиков,
         как Adobe Suite и Microsoft Office. Оплата стриминговых сервисов
         виртуальной картой
-      </v-col>
-    </v-row>
-    <v-row no-gutters class="first-hero-cont mt-12 mb-12">
-      <v-col cols="12" md="6" align="center" justify="center">
-        <v-img
-          src="social-media-marketing.svg"
-          lazy-src="social-media-marketing.svg"
-          contain
-          max-width="511"
-          max-height="436"
-        ></v-img>
-      </v-col>
-      <v-col cols="12" md="6" class="pt-12">
-        <h1 class="mt-9 h3-blue">
-          Быстрый выпуск карт для рекламных агенств и медиабайеров
-        </h1>
-        <p style="font-size: 20px" class="op-7">
-          Виртуальные карты идеальны для рекламных кампаний в Facebook, Google.
-          TikTok, ….
-          <br />
-          <br />
-          Наши карты – это лучшее решение на рынке для арбитража трафика.
-        </p>
-      </v-col>
-    </v-row>
-    <v-row no-gutters class="first-hero-cont mt-12 mb-12">
-      <v-col cols="12" md="6" class="pt-12">
-        <h1 class="mt-9 h3-grean">Безопасность</h1>
-        <p style="font-size: 20px" class="op-7">
-          Баланс под защитой .
-          <br />
-          Средства на виртуальной подарочной карте защищены EMI.
-          <br />
-          <br />
-          Они безопасно хранятся на закрытых счетах, регулируемых Управлением по
-          финансовому надзору («FCA»). Это защищает держателя карты от рисков.
-          <br />
-          <br />
-          Кроме того, мы предлагаем оптимальную защиту от мошенничества.
-          Проверяйте платежи с помощью 3D Secure от Mastercard или
-          биометрической верификации.
-        </p>
-      </v-col>
-      <v-col cols="12" md="6" align="center" justify="center">
-        <v-img
-          src="SecureCode.png"
-          lazy-src="SecureCode.png"
-          contain
-          max-width="375"
-          max-height="326"
-        ></v-img>
       </v-col>
     </v-row>
   </div>
@@ -567,44 +652,6 @@ export default {
 </script>
 
 <style lang="scss">
-.color-purple {
-  color: #a3d6ff;
-}
-.conttainer {
-  padding: 0 25px;
-}
-.hero-text {
-  font-weight: 900;
-  font-size: 44px;
-  line-height: 53px;
-}
-.hero-btn-text {
-  font-style: normal;
-  font-weight: 700;
-  font-size: 14px;
-  line-height: 17px;
-  /* identical to box height */
-
-  color: #000000;
-}
-.flex-vertival-center {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  height: 100%;
-}
-.first-hero-cont {
-  @media screen and (max-width: 576px) {
-    flex-direction: column-reverse !important;
-  }
-}
-body,
-html,
-#__layout,
-.v-main {
-  color: white;
-  background: #000000 !important;
-}
 .trafik-card {
   &__description {
     color: white;
@@ -711,29 +758,11 @@ html,
 .h3-blue {
   font-size: 28px;
   // color: #7067d8;
-  background: linear-gradient(
-    176deg,
-    rgba(3, 104, 255, 0) 4.44%,
-    #5899ff 50.08%
-  );
+  background: linear-gradient(90.87deg, rgb(0 0 0 / 86%) 1.16%, #5899ff 37.5%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   text-fill-color: transparent;
-}
-.h3-grean {
-  font-size: 28px;
-  background: linear-gradient(
-    91.84deg,
-    #03ff68 1.05%,
-    rgba(88, 153, 255, 0) 65.16%
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-.op-7 {
-  opacity: 0.7;
 }
 /* body {
   display: flex;

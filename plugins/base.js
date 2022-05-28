@@ -9,11 +9,12 @@ import Vue from "vue";
 import Vuetify from "vuetify";
 // Vue.component("file-upload", VueUploadComponent);
 Vue.use(Vuetify);
+
 // import VImageInput from 'vuetify-image-input';
 // import VImageInput from 'vuetify-image-input/a-la-carte';
 // Vue.component("v-image-input", VImageInput);
-import Loading from '@/components/elementUiCustom/loading/index'
-Loading.install(Vue)
+import Loading from "@/components/elementUiCustom/loading/index";
+Loading.install(Vue);
 // const requireComponent = require.context("@/components/base", true, /\.vue$/);
 
 // for (const file of requireComponent.keys()) {

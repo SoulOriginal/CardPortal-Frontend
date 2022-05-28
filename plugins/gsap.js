@@ -5,6 +5,7 @@ import ScrollTrigger from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
+import "particles.js";
 Vue.mixin({
   created: function () {
     this.gsap = gsap;

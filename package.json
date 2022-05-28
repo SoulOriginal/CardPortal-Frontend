@@ -81,6 +81,8 @@
     "nuxt-socket-io": "^2.0.3",
     "os": "^0.1.1",
     "parse-kml": "^1.0.1",
+    "particles.js": "^2.0.0",
+    "particles.vue": "^3.0.6",
     "secure-ls": "^1.2.6",
     "socket.io": "^4.4.1",
     "sweetalert2": "^8.19.0",

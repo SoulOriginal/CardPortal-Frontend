@@ -62,7 +62,7 @@ module.exports = {
     { src: "~plugins/bottom-sheet.js", ssr: false },
     // "~plugins/fontawesome",
     // "~plugins/base",
-    { src: "~plugins/base", ssr: false },
+    { src: "~plugins/base", ssr: false, mode: "client" },
     "~/plugins/notifications.js",
     // "~/plugins/imageViewer.js",
     // "~/plugins/google-autocomplete.js",
