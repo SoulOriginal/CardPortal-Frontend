@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <toast-container></toast-container>
-    <v-main>
+    <v-main class="bg-black">
       <home-app-bar />
       <FlyIcons />
       <v-fade-transition mode="out-in">
@@ -27,3 +27,8 @@ export default {
   },
 };
 </script>
+<style>
+.bg-black {
+  background-color: black;
+}
+</style>

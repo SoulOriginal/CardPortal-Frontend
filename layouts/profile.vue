@@ -140,6 +140,7 @@
           <v-chip outlined color="orange"
             >{{ balance }} {{ balance_сurrency }}</v-chip
           >
+          <v-btn class="ml-3" rounded>Пополнит баланс</v-btn>
           <v-spacer />
           <v-btn
             height="42"
@@ -157,6 +158,7 @@
         <nuxt />
       </v-container>
     </v-main>
+    <replenishBalance />
     <v-dialog class="lalala" v-model="dialog" width="230">
       <v-card>
         <v-btn block @click.prevent="logout">{{ $t("logout") }}</v-btn>
@@ -203,6 +205,7 @@ export default {
   }),
   components: {
     preload,
+    replenishBalance: () => import("~/components/replenishBalance"),
     LocaleDropdown: () => import("~/components/LocaleDropdown"),
   },
   computed: mapGetters({

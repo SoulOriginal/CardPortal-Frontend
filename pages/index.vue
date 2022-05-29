@@ -566,12 +566,13 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .color-purple {
   color: #a3d6ff;
 }
 .conttainer {
   padding: 0 25px;
+  color: white;
 }
 .hero-text {
   font-weight: 900;
@@ -598,10 +599,15 @@ export default {
     flex-direction: column-reverse !important;
   }
 }
-body,
-html,
-#__layout,
-.v-main {
+>>> #app {
+  background-color: rgb(195, 19, 19);
+  margin: 3rem;
+}
+>>> body >>> body,
+>>> html,
+>>> #__layout,
+>>> .v-main,
+>>> main {
   color: white;
   background: #000000 !important;
 }
