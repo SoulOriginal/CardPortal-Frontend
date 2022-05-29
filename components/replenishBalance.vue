@@ -32,6 +32,9 @@ export default {
       ],
     };
   },
+  created() {
+    this.$axios.post("/pay");
+  },
 };
 </script>
 
