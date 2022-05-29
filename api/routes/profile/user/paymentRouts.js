@@ -10,6 +10,24 @@ const configSchema = require("../../../../models/configSchema");
 const PayHistorySchema = require("../../../../models/payHistory");
 const User = require("../../../../models/userSchema");
 const router = express.Router();
+import axios from "axios";
+const { PAYMENT_API_KEY, PAYMENT_DEFOULT_CURRENCY, PAYMENT_SHOP_ID } =
+  process.env;
+// const AxiosPaymentApi = async (method, url, params) => {
+//   const config = {
+//     headers: { Authorization: `Token ${PAYMENT_API_KEY}` },
+//   };
+//   const data = await axios.get(
+//     `https://cryptocloud.plus/api/v2/invoice/create`,
+//     params
+//   );
+//   return data;
+// };
+const instancePayment = axios.create({
+  baseURL: "https://cryptocloud.plus/api/v2",
+  timeout: 50000,
+  headers: { Authorization: "Bearer " + PAYMENT_API_KEY },
+});
 router.post(
   "/pay",
   validateRequest,
@@ -18,6 +36,15 @@ router.post(
   async (req, res) => {
     const { email } = req.currentUser;
     var { amount, custom_email } = req.body;
+
+    // const test = await AxiosPaymentApi("get", "/invoice/create");
+    const test = await instancePayment
+      .get("/invoice/create")
+      .then((response) => {
+        return response.data;
+      });
+    res.json({ payload: test, status: 200 });
+    console.log(test);
     // const ids = new ObjectId(id);
     //     const existingUser = await User.findOne({ email });
     //     if (!existingUser) {

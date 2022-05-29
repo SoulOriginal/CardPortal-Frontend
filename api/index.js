@@ -179,21 +179,48 @@ require("dotenv").config();
 //   });
 // });
 
-app.all("*", function (req, res, next) {
-  // res.header("Access-Control-Allow-Origin", "https://get-man.com");
-  // res.header("Access-Control-Allow-Origin", "*");
-  // res.header("Access-Control-Allow-Headers", "X-Requested-With");
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  res.header("Access-Control-Allow-Credentials", true);
-  res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
-  res.header("X-Powered-By", " 3.2.1");
-  // res.header("Content-Type", "application/json;charset=utf-8");
-  next();
-});
+// app.all("*", function (req, res, next) {
+//   // res.header("Access-Control-Allow-Origin", "https://get-man.com");
+//   // res.header("Access-Control-Allow-Origin", "*");
+//   // res.header("Access-Control-Allow-Headers", "X-Requested-With");
+
+//   // res.header("Access-Control-Allow-Origin", "*");
+//   // res.header(
+//   //   "Access-Control-Allow-Headers",
+//   //   "Origin, X-Requested-With, Content-Type, Accept"
+//   // );
+//   // res.header("Access-Control-Allow-Credentials", true);
+//   // res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
+//   // res.header("X-Powered-By", " 3.2.1");
+//   // // res.header("Content-Type", "application/json;charset=utf-8");
+//   // next();
+
+//   res.setHeader("Access-Control-Allow-Origin", "http://localhost:4600");
+
+//   // Request methods you wish to allow
+//   res.setHeader(
+//     "Access-Control-Allow-Methods",
+//     "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+//   );
+
+//   // Request headers you wish to allow
+//   res.setHeader(
+//     "Access-Control-Allow-Headers",
+//     "X-Requested-With,content-type"
+//   );
+
+//   // Set to true if you need the website to include cookies in the requests sent
+//   // to the API (e.g. in case you use sessions)
+//   res.setHeader("Access-Control-Allow-Credentials", true);
+
+//   // Pass to next layer of middleware
+
+//   if (req.method === "OPTIONS") {
+//     return res.status(200).end();
+//   }
+
+//   return next();
+// });
 // app.all("/ws", (req, res) => {
 // const io = require("socket.io")(server);
 
