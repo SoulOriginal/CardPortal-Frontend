@@ -140,7 +140,9 @@
           <v-chip outlined color="orange"
             >{{ balance }} {{ balance_сurrency }}</v-chip
           >
-          <v-btn class="ml-3" rounded>Пополнит баланс</v-btn>
+          <v-btn class="ml-3" rounded @click="payment_dialog = !payment_dialog"
+            >Пополнит баланс</v-btn
+          >
           <v-spacer />
           <v-btn
             height="42"
@@ -158,7 +160,7 @@
         <nuxt />
       </v-container>
     </v-main>
-    <replenishBalance />
+    <replenishBalance :open="payment_dialog" />
     <v-dialog class="lalala" v-model="dialog" width="230">
       <v-card>
         <v-btn block @click.prevent="logout">{{ $t("logout") }}</v-btn>
@@ -180,6 +182,7 @@ export default {
   // },
   data: ({ context, app }) => ({
     dialog: false,
+    payment_dialog: false,
     drawer: true,
     mini: true,
     nomini: false,
@@ -200,6 +203,11 @@ export default {
         title: "history",
         icon: "mdi-clipboard-text-clock",
         to: "orders.history",
+      },
+      {
+        title: "history",
+        icon: "mdi-clipboard-text-clock",
+        to: "pay.history",
       },
     ],
   }),

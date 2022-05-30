@@ -26,7 +26,7 @@ const { PAYMENT_API_KEY, PAYMENT_DEFOULT_CURRENCY, PAYMENT_SHOP_ID } =
 const instancePayment = axios.create({
   baseURL: "https://cryptocloud.plus/api/v2",
   timeout: 50000,
-  headers: { Authorization: "Bearer " + PAYMENT_API_KEY },
+  headers: { Authorization: "Token " + PAYMENT_API_KEY },
 });
 router.post(
   "/pay",
@@ -34,91 +34,142 @@ router.post(
   currentUser,
   requireAuth,
   async (req, res) => {
-    const { email } = req.currentUser;
-    var { amount, custom_email } = req.body;
-
-    // const test = await AxiosPaymentApi("get", "/invoice/create");
-    const test = await instancePayment
-      .get("/invoice/create")
-      .then((response) => {
-        return response.data;
-      });
-    res.json({ payload: test, status: 200 });
-    console.log(test);
-    // const ids = new ObjectId(id);
-    //     const existingUser = await User.findOne({ email });
-    //     if (!existingUser) {
-    //       res.json({ payload: "User is not found", status: "7" });
-    //       return;
-    //     }
-
-    //     if (existingUser.balance < buy_price) {
-    //       return res.json({ payload: "Не хватает деняг", status: "99" });
-    //     }
-
-    //     const ConfigFind = await configSchema.find({ _id: item_id });
-    //     if (!ConfigFind) {
-    //       return res.json({ payload: "Ошибка Категории", status: "991" });
-    //     }
-    //     if (!amount) {
-    //       return res.json({ payload: "Ошибка Количества", status: "992" });
-    //     }
-    //     amount = parseInt(amount);
-    //     const GdsFind = await GdsSchema.aggregate([
-    //       {
-    //         $match: {
-    //           cnf_id: item_id,
-    //           user_id: { $exists: false },
-    //         },
-    //       },
-    //       { $limit: amount },
-    //       { $group: { _id: null, ids: { $push: "$$ROOT._id" } } },
-    //       { $unwind: "$ids" },
-    //       { $unset: ["_id"] },
-    //     ]);
-    //     if (GdsFind.length === 0) {
-    //       return res.json({ payload: "Ошибка Количества", status: "993" });
-    //     }
-    //     await User.updateOne(
-    //       { _id: ObjectId(existingUser._id) },
-    //       { $inc: { balance: -buy_price } }
-    //     );
-    //     var ObjectIds = [];
-    //     for (const gdsIdsItem of GdsFind) {
-    //       ObjectIds.push(new ObjectId(gdsIdsItem.ids));
-    //     }
-    //     const NewDateNow = Date.now();
-    //     const orderNumberRandom = Math.floor(Math.random() * 9999999999);
-    //     const SetCardsByUserId = await GdsSchema.updateMany(
-    //       { _id: { $in: ObjectIds } },
-    //       {
-    //         $set: {
-    //           user_id: existingUser._id,
-    //           opened_date: NewDateNow,
-    //           order_number: orderNumberRandom,
-    //         },
-    //       },
-    //       { multi: true }
-    //     );
-    //     console.log(ConfigFind);
-    //     const OrdersHistoryCreate = new OrdersHistorySchema({
-    //       user_id: existingUser._id,
-    //       buy_price,
-    //       amount,
-    //       cnf_id: item_id,
-    //       сurrency_buy: buy_сurrency,
-    //       card_balance: ConfigFind[0].balance,
-    //       order_number: orderNumberRandom,
-    //       currency_card,
-    //       cards_buy_ids: ObjectIds,
-    //     });
-    //     console.log(OrdersHistoryCreate);
-    //     await OrdersHistoryCreate.save();
-    //     if (!OrdersHistoryCreate) {
-    //       res.json({ payload: "Error save User" });
-    //       return;
-    //     }
-    //     res.json({ payload: "ok", status: 200 });
+    const { email, id } = req.currentUser;
+    var { custom_amount } = req.body;
+    const PaymentHistoryCreate = new PayHistorySchema({ user_id: id });
+    await PaymentHistoryCreate.save();
+    const { amount, currency, invoice_id, pay_url, status, amount_usd } =
+      await instancePayment
+        .post("/invoice/create", {
+          shop_id: PAYMENT_SHOP_ID,
+          amount: custom_amount,
+          email,
+          order_id: PaymentHistoryCreate._id,
+          currency: PAYMENT_DEFOULT_CURRENCY,
+        })
+        .then((response) => {
+          return response.data;
+        });
+    await PayHistorySchema.updateOne(
+      {
+        _id: new ObjectId(PaymentHistoryCreate._id),
+      },
+      {
+        $set: {
+          status,
+          currency,
+          invoice_id,
+          url: pay_url,
+          amount,
+          amount_usd,
+        },
+      }
+    );
+    res.json({ pay_url });
   }
 );
+const updateStatusPayment = async (uuid) => {
+  const { status, status_invoice, error } = await instancePayment
+    .get("/invoice/status", { params: { uuid } })
+    .then((response) => {
+      return response.data;
+    });
+  if (error) {
+    return res.json({ error });
+  }
+  await PayHistorySchema.updateOne(
+    {
+      invoice_id: uuid,
+    },
+    {
+      $set: {
+        status_invoice,
+      },
+    }
+  );
+  return { status, status_invoice, error };
+};
+router.get(
+  "/pay/status",
+  validateRequest,
+  currentUser,
+  requireAuth,
+  async (req, res) => {
+    const { email, id } = req.currentUser;
+    var { uuid } = req.query;
+    const { status, status_invoice, error } = await updateStatusPayment(uuid);
+    // const { status, status_invoice, error } = await instancePayment
+    //   .get("/invoice/status", { params: { uuid: "44KSZ1" } })
+    //   .then((response) => {
+    //     return response.data;
+    //   });
+    // if (error) {
+    //   return res.json({ error });
+    // }
+    // await PayHistorySchema.updateOne(
+    //   {
+    //     invoice_id: uuid,
+    //   },
+    //   {
+    //     $set: {
+    //       status_invoice,
+    //     },
+    //   }
+    // );
+    res.json({ status, status_invoice, error });
+  }
+);
+router.get(
+  "/pay/history",
+  validateRequest,
+  currentUser,
+  requireAuth,
+  async (req, res) => {
+    const { email, id } = req.currentUser;
+    var { user_id, user_email } = req.query;
+    const existingUserPaymentHistory = await PayHistorySchema.find({
+      user_id: id,
+    });
+    for (let index = 0; index < existingUserPaymentHistory.length; index++) {
+      const { status, status_invoice, invoice_id } =
+        existingUserPaymentHistory[index];
+      if (status === "success" && !status_invoice) {
+        console.log(123);
+        const { status, status_invoice, error } = await updateStatusPayment(
+          invoice_id
+        );
+      }
+    }
+    const existingUserPaymentHistory2 = await PayHistorySchema.find({
+      user_id: id,
+    });
+    res.json([...existingUserPaymentHistory2]);
+  }
+);
+router.post("/pay/result", async (req, res) => {
+  // const { email, id } = req.currentUser;
+  var { status, invoice_id, amount_crypto, currency, order_id } = req.body;
+  console.log(status, invoice_id, amount_crypto, currency, order_id);
+  const { user_id, amount_usd } = await PayHistorySchema.findOne({
+    _id: new ObjectId(order_id),
+  });
+  if (!user_id && !amount_usd) return;
+  const abc = await User.updateOne(
+    { _id: ObjectId(user_id) },
+    { $inc: { balance: +amount_usd } }
+  );
+  await PayHistorySchema.updateOne(
+    {
+      _id: new ObjectId(order_id),
+    },
+    {
+      $set: {
+        status,
+        amount_crypto,
+        currency,
+      },
+    }
+  );
+  return;
+});
 export { router as paymentRouts };

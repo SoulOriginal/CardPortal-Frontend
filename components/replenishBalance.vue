@@ -1,14 +1,36 @@
 <template>
   <div>
-    123
     <v-dialog v-model="dialog" width="800">
-      <div class="dialog-balance">
-        <vue-widget
-          shop_id="Cjx0wf2NnPVNwb2i"
-          api_key="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ODYyLCJleHAiOjg4MDUyODc2MjUxfQ.DmyJ0A1ZCgCqxmK9gYwF0d6hYHGqDYJs-jOCyF_gdRY"
-          currency="USD"
-          amount=""
-        ></vue-widget>
+      <div class="dialog-balance pa-4">
+        <v-row align="center">
+          <v-col cols="12" sm="6" md="4">
+            <v-text-field
+              v-model="custom_amount"
+              placeholder="Сумма пополнения"
+              filled
+              rounded
+              outlined
+              name="amount"
+              type="number"
+              hide-details
+              :disabled="send_req"
+              min="1"
+              max="10000"
+              prefix="USD"
+              suffix="$"
+            ></v-text-field>
+          </v-col>
+          <v-col cols="12" sm="6" md="8"
+            ><v-btn large block @click="getPayUrl" :disabled="send_req"
+              >Пополнить счет на {{ custom_amount }}$</v-btn
+            ></v-col
+          >
+        </v-row>
+        <transition>
+          <v-btn link block v-if="pay_url" @click="openBankPage"
+            >Открыть страницу ополнения</v-btn
+          >
+        </transition>
       </div>
     </v-dialog>
   </div>
@@ -16,32 +38,46 @@
 
 <script>
 export default {
-  data: () => ({ dialog: true }),
-  head() {
-    return {
-      script: [
-        {
-          src: "https://cryptocloud.plus/widget/v2/js/app.js",
-        },
-      ],
-      link: [
-        {
-          rel: "stylesheet",
-          href: "https://cryptocloud.plus/widget/v2/css/app.css",
-        },
-      ],
-    };
+  props: ["open"],
+  data: () => ({
+    dialog: false,
+    custom_amount: 1,
+    send_req: false,
+    pay_url: null,
+  }),
+  methods: {
+    async getPayUrl() {
+      // await this.$axios.get("/pay/history");
+      // return;
+      this.send_req = true;
+      const { data } = await this.$axios.post("/pay", {
+        custom_amount: this.custom_amount,
+      });
+      if (!data) return;
+      if (!data.pay_url) return;
+      this.pay_url = data.pay_url;
+      this.openBankPage(data.pay_url);
+    },
+    openBankPage(url) {
+      window.open(url || this.pay_url, "_blank");
+    },
+    async getPayStatus() {
+      // this.$axios.post("/pay", { custom_amount: 2 });
+      const { data } = await this.$axios.get("/pay/status");
+    },
   },
-  created() {
-    this.$axios.post("/pay");
+
+  watch: {
+    open(newState) {
+      this.dialog = true;
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
 .dialog-balance {
-  background-color: white;
-  min-width: 500px;
+  background-color: white !important;
 }
 .absolute-currency {
   top: 23.5px !important;
