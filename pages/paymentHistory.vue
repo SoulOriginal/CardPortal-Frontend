@@ -32,6 +32,16 @@
         <template v-slot:item.url="{ item }">
           <v-btn link text :href="item.url" target="_blank">Ссылка</v-btn>
         </template>
+        <template v-slot:item.actions="{ item }">
+          <v-btn
+            v-if="
+              item.status_invoice !== 'canceled' &&
+              item.status_invoice !== 'paid'
+            "
+            @click="featchUpdateById(item.invoice_id)"
+            >Обновить</v-btn
+          >
+        </template>
       </v-data-table>
     </v-card>
   </div>
@@ -51,6 +61,7 @@ export default {
           text: "Сумма",
           value: "amount_usd",
         },
+        { text: this.$t("global.tables.pay"), value: "currency" },
         {
           text: "status",
           filterable: true,
@@ -59,8 +70,8 @@ export default {
 
         { text: "url", value: "url" },
         { text: "status_invoice", value: "status_invoice" },
-        { text: this.$t("global.tables.pay"), value: "currency" },
         { text: this.$t("global.tables.date"), value: "create_date" },
+        { text: "actions", value: "actions" },
       ],
     };
   },
@@ -75,6 +86,7 @@ export default {
   methods: {
     ...mapActions({
       featchPaymentHistory: "pay/featchPaymentHistory",
+      featchUpdateById: "pay/featchUpdateById",
     }),
   },
 };

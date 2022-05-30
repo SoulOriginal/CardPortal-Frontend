@@ -26,17 +26,13 @@
             ></v-col
           >
         </v-row>
-        <transition>
-          <v-btn link block v-if="pay_url" @click="openBankPage"
-            >Открыть страницу ополнения</v-btn
-          >
-        </transition>
       </div>
     </v-dialog>
   </div>
 </template>
 
 <script>
+import { mapGetters, mapActions, mapState } from "vuex";
 export default {
   props: ["open"],
   data: () => ({
@@ -46,9 +42,10 @@ export default {
     pay_url: null,
   }),
   methods: {
+    ...mapActions({
+      featchPaymentHistory: "pay/featchPaymentHistory",
+    }),
     async getPayUrl() {
-      // await this.$axios.get("/pay/history");
-      // return;
       this.send_req = true;
       const { data } = await this.$axios.post("/pay", {
         custom_amount: this.custom_amount,
@@ -57,13 +54,19 @@ export default {
       if (!data.pay_url) return;
       this.pay_url = data.pay_url;
       this.openBankPage(data.pay_url);
+      this.dialog = false;
+      this.custom_amount = 1;
+      this.send_req = false;
+      this.pay_url = null;
+      await this.featchPaymentHistory();
+      this.$router.push({ name: "pay.history" });
     },
     openBankPage(url) {
       window.open(url || this.pay_url, "_blank");
     },
     async getPayStatus() {
       // this.$axios.post("/pay", { custom_amount: 2 });
-      const { data } = await this.$axios.get("/pay/status");
+      // const { data } = await this.$axios.get(`/pay/status??uuid=${}`);
     },
   },
 
