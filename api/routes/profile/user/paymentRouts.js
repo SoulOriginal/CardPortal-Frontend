@@ -133,7 +133,7 @@ router.get(
     for (let index = 0; index < existingUserPaymentHistory.length; index++) {
       const { status, status_invoice, invoice_id } =
         existingUserPaymentHistory[index];
-      if (status === "success" && !status_invoice) {
+      if (status_invoice !== "paid" && status_invoice !== "canceled") {
         console.log(123);
         const { status, status_invoice, error } = await updateStatusPayment(
           invoice_id
